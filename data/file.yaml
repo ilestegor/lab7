@@ -1,0 +1,24 @@
+- !!model.MusicBand
+ id: 1
+ name: "Pink Floyd"
+ coordinates:
+   x: -234
+   y: 234.0
+ creationDate: 2023-02-22T14:06:24.313008
+ numberOfParticipants: 2
+ albumsCount: 31
+ establishmentDate: 2023-07-18T11:22:15
+ genre: "PUNK_ROCK"
+ label: "Hello"
+- !!model.MusicBand
+ id: 2
+ name: "Pink Floyd"
+ coordinates:
+   x: -234
+   y: 234.0
+ creationDate: 2023-02-22T14:06:24.313008
+ numberOfParticipants: 2
+ albumsCount: 31
+ establishmentDate: 2023-07-18T11:22:15
+ genre: "PUNK_ROCK"
+ label: "Hello"
