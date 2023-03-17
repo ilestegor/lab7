@@ -1,12 +1,10 @@
 package model;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 /**
- * Класс коордиант
+ * Model of Coordinates, contains getters/setter for fields of clas
+ * @author ilestegor
  */
-public class Coordinates{
+public class Coordinates {
     private Long x;
     private float y;
 
@@ -21,7 +19,7 @@ public class Coordinates{
         this.y = y;
     }
 
-    public Coordinates(Long x, float y){
+    public Coordinates(Long x, float y) {
         this.x = x;
         this.y = y;
     }
@@ -37,8 +35,6 @@ public class Coordinates{
 
     @Override
     public String toString() {
-        return "Коордианаты: " +
-                "x= " + x +
-                ", y= " + y;
+        return "x= " + x + ", y= " + y;
     }
 }

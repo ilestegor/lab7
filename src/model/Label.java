@@ -1,18 +1,26 @@
 package model;
 
-public class Label{
-    private String name;
-    public Label(String name){
-        this.name = name;
+/**
+ * Model of Label, contains getters/setters for fields of class
+ * @author ilestegor
+ */
+public class Label {
+    private String label;
+
+    public Label(String label) {
+        this.label = label;
     }
 
-    public String getName() {
-        return name;
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     @Override
     public String toString() {
-        return "Название лейбла: " + name;
+        return label;
     }
-
 }

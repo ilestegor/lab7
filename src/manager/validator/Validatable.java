@@ -1,8 +1,11 @@
 package manager.validator;
 
-
+/**
+ * Contains method for validation
+ * @author ilestegor
+ */
 public interface Validatable {
-    public static boolean validate(Object value) {
+    static boolean validate(Object value) {
         return false;
     }
 }

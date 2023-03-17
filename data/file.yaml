@@ -1,24 +1,36 @@
-- !!model.MusicBand
- id: 1
- name: "Pink Floyd"
- coordinates:
-   x: -234
-   y: 234.0
- creationDate: 2023-02-22T14:06:24.313008
- numberOfParticipants: 2
- albumsCount: 31
- establishmentDate: 2023-07-18T11:22:15
- genre: "PUNK_ROCK"
- label: "Hello"
-- !!model.MusicBand
- id: 2
- name: "Pink Floyd"
- coordinates:
-   x: -234
-   y: 234.0
- creationDate: 2023-02-22T14:06:24.313008
- numberOfParticipants: 2
- albumsCount: 31
- establishmentDate: 2023-07-18T11:22:15
- genre: "PUNK_ROCK"
- label: "Hello"
+- !!model.MusicBandClone
+  albumsCount: 4
+  coordinates:
+    x: 43
+    y: -431.4532
+  creationDate: 2023-03-11T00:00
+  establishmentDate: 2014-11-18T21:00:00Z
+  genre: SOUL
+  id: 65432
+  label: Columbia Records
+  name: Clones
+  numberOfParticipants: 3
+- !!model.MusicBandClone
+  albumsCount: 4
+  coordinates:
+    x: 43
+    y: -431.0
+  creationDate: 2023-03-11T00:00
+  establishmentDate: 2014-11-18T21:00:00Z
+  genre: SOUL
+  id: 2329625
+  label: Columbia Records
+  name: The Freaks
+  numberOfParticipants: 3
+- !!model.MusicBandClone
+  albumsCount: 2
+  coordinates:
+    x: 432
+    y: 432.32
+  creationDate: 2023-03-11T00:00
+  establishmentDate: 2019-04-14T21:00:00Z
+  genre: SOUL
+  id: 7953135
+  label: Records Magic
+  name: Crave
+  numberOfParticipants: 4

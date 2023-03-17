@@ -1,25 +1,27 @@
 package model;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * Класс музкальной группы
+ * Model of MusicBand. Contains getters/setters for each field of class.
+ * Contains some restrictions for filed. Restrictions signed near every field
+ *
+ * @author ilestegor
  */
-public class MusicBand{
-    private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    private Coordinates coordinates; //Поле не может быть null
-    private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private Integer numberOfParticipants; //Поле не может быть null, Значение поля должно быть больше 0
-    private int albumsCount; //Значение поля должно быть больше 0
-    private Date establishmentDate; //Поле не может быть null
-    private MusicGenre genre; //Поле не может быть null
-    private Label label; //Поле может быть null
+public class MusicBand {
+    private long id; //must be unique, > 0 and generated automatically
+    private String name; //filed can't be null or empty
+    private Coordinates coordinates; //field can't be nu;;
+    private LocalDateTime creationDate; //file can't be null, generated automatically
+    private Integer numberOfParticipants; //filed can't be null, must be > 0
+    private int albumsCount; //filed must be > 0
+    private Date establishmentDate; //field can't be null
+    private MusicGenre genre; //field can't be null
+    private Label label; //filed can be null
 
-    public MusicBand(){}
+    public MusicBand() {}
+
     public MusicBand(long id, String name, Coordinates coordinates,
                      LocalDateTime creationDate, Integer numberOfParticipants,
                      int albumsCount, Date establishmentDate,
@@ -34,6 +36,7 @@ public class MusicBand{
         this.genre = genre;
         this.label = label;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -107,19 +110,31 @@ public class MusicBand{
         return label;
     }
 
+    /**
+     * Method for updating MusicBand's instance when using update command
+     * @param musicBand
+     */
+    public void updateElement(MusicBand musicBand) {
+        setName(musicBand.getName());
+        setCoordinates(musicBand.getCoordinates());
+        setNumberOfParticipants(musicBand.getNumberOfParticipants());
+        setAlbumsCount(musicBand.getAlbumsCount());
+        setEstablishmentDate(musicBand.getEstablishmentDate());
+        setGenre(musicBand.getGenre());
+        setLabel(musicBand.getLabel());
+    }
 
     @Override
     public String toString() {
-        return "MusicBand{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", coordinates=" + coordinates +
-                ", creationDate=" + creationDate +
-                ", numberOfParticipants=" + numberOfParticipants +
-                ", albumsCount=" + albumsCount +
-                ", establishmentDate=" + establishmentDate +
-                ", genre=" + genre +
-                ", label=" + label +
-                '}';
+        return "---------\n" +
+                "id: " + id + "\n" +
+                "name: " + name + "\n" +
+                "coordinates: " + coordinates + "\n" +
+                "creationDate: " + creationDate + "\n" +
+                "numberOfParticipants: " + numberOfParticipants + "\n" +
+                "albumsCount: " + albumsCount + "\n" +
+                "establishmentDate: " + establishmentDate + "\n" +
+                "genre: " + genre + "\n" +
+                "label: " + label + "\n";
     }
 }
