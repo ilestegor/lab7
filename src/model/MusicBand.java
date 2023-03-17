@@ -20,7 +20,8 @@ public class MusicBand {
     private MusicGenre genre; //field can't be null
     private Label label; //filed can be null
 
-    public MusicBand() {}
+    public MusicBand() {
+    }
 
     public MusicBand(long id, String name, Coordinates coordinates,
                      LocalDateTime creationDate, Integer numberOfParticipants,
@@ -112,6 +113,7 @@ public class MusicBand {
 
     /**
      * Method for updating MusicBand's instance when using update command
+     *
      * @param musicBand
      */
     public void updateElement(MusicBand musicBand) {

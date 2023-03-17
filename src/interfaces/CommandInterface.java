@@ -2,6 +2,7 @@ package interfaces;
 
 /**
  * Contains methods for command execution and argument checking
+ *
  * @author ilestegor
  */
 public interface CommandInterface {
@@ -12,6 +13,7 @@ public interface CommandInterface {
 
     /**
      * Validate arguments
+     *
      * @param inputArgs
      * @return
      */

@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 /**
  * Contains tools for operation MusicBand collection
+ *
  * @author ilestegor
  */
 
@@ -28,6 +29,7 @@ public class MusicBandCollection {
 
     /**
      * Method for validation input values and adding to collection new objects from file
+     *
      * @param musicBand
      */
     public static void validateAndAddToCollection(MusicBand musicBand) {
@@ -49,6 +51,7 @@ public class MusicBandCollection {
 
     /**
      * Method for adding new objects to collection via add command
+     *
      * @param musicBand
      */
     public static void addToCollection(MusicBand musicBand) {
@@ -57,6 +60,7 @@ public class MusicBandCollection {
 
     /**
      * Getting container with ids for all objects in collection
+     *
      * @return HashSet with ids
      */
     public static HashSet<Number> getIdContainer() {
@@ -65,6 +69,7 @@ public class MusicBandCollection {
 
     /**
      * Getting localDate for collection initialization
+     *
      * @return LocalDateTime object with cuurent date
      */
     public static LocalDateTime getLocalDate() {
@@ -73,6 +78,7 @@ public class MusicBandCollection {
 
     /**
      * Getting collection
+     *
      * @return LinkedList with MusicBand objects
      */
     public static LinkedList<MusicBand> getMusicBandLinkedList() {

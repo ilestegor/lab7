@@ -2,6 +2,7 @@ package model;
 
 /**
  * Contains enums MusicGenre
+ *
  * @author ilestegor
  */
 public enum MusicGenre {
@@ -19,6 +20,7 @@ public enum MusicGenre {
 
     /**
      * Method for checking values of enum when add command is running
+     *
      * @param label
      * @return MusicGenre object
      */

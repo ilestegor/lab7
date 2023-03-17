@@ -14,6 +14,7 @@ public abstract class Command implements CommandInterface {
 
     /**
      * Constructor for Command abstract class
+     *
      * @param description
      * @param hasArgs
      */
@@ -30,6 +31,7 @@ public abstract class Command implements CommandInterface {
 
     /**
      * Checks if command has arguments
+     *
      * @return true if command has arguments, false if it doesn't
      */
     public boolean isHasArgs() {
@@ -38,6 +40,7 @@ public abstract class Command implements CommandInterface {
 
     /**
      * Method gets description of command
+     *
      * @return description of command
      */
     public String getDescription() {
@@ -46,6 +49,7 @@ public abstract class Command implements CommandInterface {
 
     /**
      * Gets arguments that were entered by user
+     *
      * @return command's arguments
      */
     public Object getArgs() {
@@ -54,6 +58,7 @@ public abstract class Command implements CommandInterface {
 
     /**
      * Method sets arguments for executing command
+     *
      * @param args
      */
     public void setArgs(Object args) {

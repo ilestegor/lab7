@@ -17,6 +17,7 @@ import java.util.*;
 
 /**
  * Contains tools for getting data from user
+ *
  * @author ilestegor
  */
 public class UserManager {
@@ -34,6 +35,7 @@ public class UserManager {
 
     /**
      * Requests commands for script from file
+     *
      * @param list
      */
     public static void requestCommandForScript(List<String> list) {
@@ -51,6 +53,7 @@ public class UserManager {
 
     /**
      * Gets data from user via Command Line and executes commands
+     *
      * @param line
      */
     public static void requestPlainCommand(String line) {
@@ -83,7 +86,7 @@ public class UserManager {
             System.out.print("\nВведите команду: ");
             String line = scanner.nextLine().strip().replaceAll("\\s+", " ");
             requestPlainCommand(line);
-        } catch (NoSuchElementException ex){
+        } catch (NoSuchElementException ex) {
             System.out.println("Завершение программы!");
             setIsInWork(false);
         }
@@ -91,6 +94,7 @@ public class UserManager {
 
     /**
      * Requests data from user for adding new MusicBand object to collection. Used with add command
+     *
      * @param musicBand
      * @return MusicBand object
      */
@@ -254,6 +258,7 @@ public class UserManager {
 
     /**
      * Method checks if user input is empty
+     *
      * @param userInput
      * @return true if user input is empty, false if is not empty
      */
@@ -268,6 +273,7 @@ public class UserManager {
 
     /**
      * Flag for indicating that program is running
+     *
      * @return true if program is working, false otherwise
      */
     public static boolean isIsInWork() {
@@ -276,6 +282,7 @@ public class UserManager {
 
     /**
      * Method for setting work of program
+     *
      * @param isInWork
      */
     public static void setIsInWork(boolean isInWork) {

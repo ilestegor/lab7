@@ -2,6 +2,7 @@ package manager.validator;
 
 /**
  * Contains method for validation
+ *
  * @author ilestegor
  */
 public interface Validatable {

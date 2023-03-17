@@ -2,6 +2,7 @@ package model;
 
 /**
  * Model of Coordinates, contains getters/setter for fields of clas
+ *
  * @author ilestegor
  */
 public class Coordinates {

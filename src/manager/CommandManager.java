@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 /**
  * Contains methods for storing, getting command instances
+ *
  * @author ilestegor
  */
 public class CommandManager {
@@ -34,6 +35,7 @@ public class CommandManager {
 
     /**
      * Return all commands that stored in HashMap
+     *
      * @return HashMap object with Command objects
      */
     public static HashMap<String, Command> getCommandMap() {

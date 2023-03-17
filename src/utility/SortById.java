@@ -6,6 +6,7 @@ import java.util.Comparator;
 
 /**
  * Class for sorting collection by id, overriding method compare
+ *
  * @author ilestegor
  */
 public class SortById implements Comparator<MusicBand> {

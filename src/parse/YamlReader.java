@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 
 /**
  * Parser that reads Yaml from file, adding converted object to collection
+ *
  * @author ilestegor
  */
 public class YamlReader implements BaseReader {
@@ -25,10 +26,8 @@ public class YamlReader implements BaseReader {
 
         YAMLMapper yamlMapper = new YAMLMapper(new YAMLFactory());
         yamlMapper.registerModule(new JavaTimeModule());
-        try {
-            InputStreamReader input = new InputStreamReader(new FileInputStream(path));
+        try (InputStreamReader input = new InputStreamReader(new FileInputStream(path))) {
             musicBands = yamlMapper.readValue(input, MusicBand[].class);
-
             for (MusicBand x : musicBands) {
                 MusicBandCollection.validateAndAddToCollection(x);
             }

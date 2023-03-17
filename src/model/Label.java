@@ -2,6 +2,7 @@ package model;
 
 /**
  * Model of Label, contains getters/setters for fields of class
+ *
  * @author ilestegor
  */
 public class Label {
