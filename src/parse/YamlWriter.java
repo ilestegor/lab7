@@ -26,9 +26,9 @@ public class YamlWriter implements BaseWriter {
             yaml.dump(new CloneParser().parseToClone(MusicBandCollection.getMusicBandLinkedList().toArray(new MusicBand[0])), writer);
             writer.flush();
         } catch (FileNotFoundException ex) {
-            System.out.println("lol");
+            System.out.println("Файл не найден!");
         } catch (IOException e) {
-            System.out.println("lols");
+            System.out.println("Что-то пошло не так!");
         }
     }
 }
