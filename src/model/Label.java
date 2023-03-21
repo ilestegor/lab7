@@ -15,7 +15,7 @@ public class Label {
     }
 
     public void setLabel(String label) {
-        if (LabelValidator.validate(label)){
+        if (LabelValidator.validate(label)) {
             this.label = label;
         }
     }

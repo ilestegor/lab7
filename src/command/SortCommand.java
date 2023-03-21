@@ -18,7 +18,7 @@ public class SortCommand extends Command {
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            if (MusicBandCollection.getMusicBandLinkedList().isEmpty()){
+            if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
                 printer.print("Коллекция пуста! Сортировать нечего");
             } else {
                 MusicBandCollection.getMusicBandLinkedList().sort(new SortById());

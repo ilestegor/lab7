@@ -12,22 +12,23 @@ public class Coordinates {
     private Long x;
     private float y;
 
-    public Coordinates() {}
-
+    public Coordinates() {
+    }
 
 
     public Coordinates(Long x, float y) {
         this.x = x;
         this.y = y;
     }
+
     public void setX(Long x) {
-        if (CoordinateXValidator.validate(x)){
+        if (CoordinateXValidator.validate(x)) {
             this.x = x;
         }
     }
 
     public void setY(float y) {
-        if (CoordinateYValidator.validate(y)){
+        if (CoordinateYValidator.validate(y)) {
             this.y = y;
         }
     }

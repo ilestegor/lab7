@@ -20,7 +20,7 @@ public class AddCommand extends Command {
 
     @Override
     public void execute(Printer printer) {
-        if (checkArgument(new Printer(),getArgs())) {
+        if (checkArgument(new Printer(), getArgs())) {
             MusicBandCollection.addToCollection(UserManager.requestDataForUserMusicBand(new MusicBand()));
             printer.print("Объект успешно добавлен в коллекцию!");
         }

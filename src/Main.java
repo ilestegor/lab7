@@ -1,15 +1,10 @@
 import manager.MusicBandCollection;
 import manager.UserManager;
-import model.Coordinates;
-import model.Label;
-import model.MusicBand;
-import model.MusicGenre;
 import parse.YamlReader;
 import utility.Printer;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Main {
     public static final String ENV_KEY = System.getenv("YamlFile");

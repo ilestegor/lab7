@@ -1,7 +1,6 @@
 package model;
 
 import manager.validator.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -42,48 +41,49 @@ public class MusicBand {
     }
 
     public void setName(String name) {
-        if (NameValidator.validate(name)){
+        if (NameValidator.validate(name)) {
             this.name = name;
         }
     }
+
     public void setCoordinates(Coordinates coordinates) {
-       if (CoordinateXValidator.validate(coordinates.getX()) && CoordinateYValidator.validate(coordinates.getY())){
-           this.coordinates = coordinates;
-       }
+        if (CoordinateXValidator.validate(coordinates.getX()) && CoordinateYValidator.validate(coordinates.getY())) {
+            this.coordinates = coordinates;
+        }
     }
 
     public void setNumberOfParticipants(Integer numberOfParticipants) {
-        if (NumberOfParticipantsValidator.validate(numberOfParticipants)){
+        if (NumberOfParticipantsValidator.validate(numberOfParticipants)) {
             this.numberOfParticipants = numberOfParticipants;
         }
     }
 
     public void setAlbumsCount(int albumsCount) {
-        if (AlbumsCountValidator.validate(albumsCount)){
+        if (AlbumsCountValidator.validate(albumsCount)) {
             this.albumsCount = albumsCount;
         }
     }
 
     public void setEstablishmentDate(Date establishmentDate) {
-        if (EstablishmentDateValidator.validate(establishmentDate)){
+        if (EstablishmentDateValidator.validate(establishmentDate)) {
             this.establishmentDate = establishmentDate;
         }
     }
 
     public void setGenre(MusicGenre genre) {
-        if (MusicGenreValidator.validate(genre)){
+        if (MusicGenreValidator.validate(genre)) {
             this.genre = genre;
         }
     }
 
     public void setLabel(Label label) {
-        if (LabelValidator.validate(label)){
+        if (LabelValidator.validate(label)) {
             this.label = label;
         }
     }
 
     public void setId(long id) {
-        if (IdValidator.validate(id)){
+        if (IdValidator.validate(id)) {
             this.id = id;
         }
     }

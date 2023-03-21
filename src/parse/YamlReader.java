@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  *
  * @author ilestegor
  */
-public class YamlReader implements BaseReader{
+public class YamlReader implements BaseReader {
     MusicBand[] musicBands;
     private Printer printer;
 
