@@ -6,6 +6,7 @@ import model.Coordinates;
 import model.Label;
 import model.MusicBand;
 import model.MusicGenre;
+import utility.Printer;
 import utility.RecursionException;
 import utility.RecursionLimiter;
 
@@ -67,12 +68,13 @@ public class UserManager {
             argument = commandAndArgument[1];
             command = command.toLowerCase();
         } else {
-            System.out.println("Нужно ввести команду!");
+            System.out.println("Команда или аргумент введены неверно!");
             return;
         }
         if (commandMap.containsKey(command)) {
             commandMap.get(command).setArgs(argument);
-            commandMap.get(command).execute();
+            commandMap.get(command).execute(new Printer());
+
         } else {
             System.out.println("Команды с названием " + commandAndArgument[0] + " не существует! Для уточнения команды воспользуйтесь командой \"help\" ");
         }

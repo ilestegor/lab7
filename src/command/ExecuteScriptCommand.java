@@ -1,6 +1,7 @@
 package command;
 
 import manager.UserManager;
+import utility.Printer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,13 +22,13 @@ public class ExecuteScriptCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
             String base = "/Users/ilestegor/Desktop/Универ/1курс/2сем/прога/student-6/data/";
             String path = base + getArgs();
             try {
                 if (new File(path).length() == 0) {
-                    System.out.println("Скрипт пустой!");
+                    printer.print("Скрипт пустой!");
                 } else {
                     BufferedReader bf = new BufferedReader(new FileReader(path));
                     String line = bf.readLine();
@@ -40,15 +41,15 @@ public class ExecuteScriptCommand extends Command {
                     UserManager.requestCommandForScript(listOfCommands);
                 }
             } catch (IOException ex) {
-                System.out.println("Такого файла не существует! Проверьте, что файл находится в папке");
+                printer.print("Такого файла не существует! Проверьте, что файл находится в папке");
             }
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            System.out.println("Команда execute_script должна принимать аргумент в виде пути к файлу!");
+            printer.print("Команда execute_script должна принимать аргумент в виде пути к файлу!");
             return false;
         }
         return true;

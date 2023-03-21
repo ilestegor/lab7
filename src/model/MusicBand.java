@@ -1,5 +1,8 @@
 package model;
 
+import manager.validator.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -39,35 +42,50 @@ public class MusicBand {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (NameValidator.validate(name)){
+            this.name = name;
+        }
     }
-
     public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+       if (CoordinateXValidator.validate(coordinates.getX()) && CoordinateYValidator.validate(coordinates.getY())){
+           this.coordinates = coordinates;
+       }
     }
 
     public void setNumberOfParticipants(Integer numberOfParticipants) {
-        this.numberOfParticipants = numberOfParticipants;
+        if (NumberOfParticipantsValidator.validate(numberOfParticipants)){
+            this.numberOfParticipants = numberOfParticipants;
+        }
     }
 
     public void setAlbumsCount(int albumsCount) {
-        this.albumsCount = albumsCount;
+        if (AlbumsCountValidator.validate(albumsCount)){
+            this.albumsCount = albumsCount;
+        }
     }
 
     public void setEstablishmentDate(Date establishmentDate) {
-        this.establishmentDate = establishmentDate;
+        if (EstablishmentDateValidator.validate(establishmentDate)){
+            this.establishmentDate = establishmentDate;
+        }
     }
 
     public void setGenre(MusicGenre genre) {
-        this.genre = genre;
+        if (MusicGenreValidator.validate(genre)){
+            this.genre = genre;
+        }
     }
 
     public void setLabel(Label label) {
-        this.label = label;
+        if (LabelValidator.validate(label)){
+            this.label = label;
+        }
     }
 
     public void setId(long id) {
-        this.id = id;
+        if (IdValidator.validate(id)){
+            this.id = id;
+        }
     }
 
     public void setCreationDate(LocalDateTime creationDate) {

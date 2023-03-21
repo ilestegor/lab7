@@ -3,6 +3,7 @@ package command;
 import manager.MusicBandCollection;
 import manager.UserManager;
 import model.MusicBand;
+import utility.Printer;
 
 /**
  * Class contains implementation of update command
@@ -17,12 +18,12 @@ public class UpdateIdCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute(Printer printer) {
         int count = 0;
         if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-            System.out.println("Коллекция пуста!");
+            printer.print("Коллекция пуста!");
         } else {
-            if (checkArgument(getArgs())) {
+            if (checkArgument(new Printer(), getArgs())) {
                 for (MusicBand musicBand : MusicBandCollection.getMusicBandLinkedList()) {
                     if (musicBand.getId() == Long.parseLong(getArgs().toString())) {
                         count++;
@@ -30,23 +31,23 @@ public class UpdateIdCommand extends Command {
                     }
                 }
                 if (count == 0) {
-                    System.out.println("Элемента с id " + getArgs() + " не найдено!");
+                    printer.print("Элемента с id " + getArgs() + " не найдено!");
                 }
             }
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            System.out.println("У команды update должен быть аргумент id (id элемента, значения которого вы хотите обновить). Попробуйте еще раз!");
+            printer.print("У команды update должен быть аргумент id (id элемента, значения которого вы хотите обновить). Попробуйте еще раз!");
             return false;
         } else {
             try {
                 Integer.parseInt(getArgs().toString());
                 return true;
             } catch (NumberFormatException ex) {
-                System.out.println("Команда update имеет аргумент типа (int). Попробуйте еще раз!");
+                printer.print("Команда update имеет аргумент типа (int). Попробуйте еще раз!");
                 return false;
             }
         }

@@ -1,6 +1,7 @@
 package command;
 
 import manager.UserManager;
+import utility.Printer;
 
 /**
  * Class contains implementation of exit command
@@ -14,19 +15,19 @@ public class ExitCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
-            System.out.println("Завершение программы!");
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
+            printer.print("Завершение программы!");
             UserManager.setIsInWork(false);
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
             return true;
         } else {
-            System.out.println("Команда exit не имеет аргументов, попробуйте ввести команду без аргументов!");
+            printer.print("Команда exit не имеет аргументов, попробуйте ввести команду без аргументов!");
             return false;
         }
     }

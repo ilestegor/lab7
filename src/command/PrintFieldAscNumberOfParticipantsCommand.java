@@ -2,6 +2,7 @@ package command;
 
 import manager.MusicBandCollection;
 import model.MusicBand;
+import utility.Printer;
 
 import java.util.*;
 
@@ -17,10 +18,10 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
             if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                System.out.println("Коллекция пуста");
+                printer.print("Коллекция пуста");
             } else {
                 LinkedHashMap<String, Integer> bandNameAndParticipantsCount = new LinkedHashMap<>();
                 for (MusicBand musicBand : MusicBandCollection.getMusicBandLinkedList()) {
@@ -33,12 +34,9 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
                         return o1.getValue() - o2.getValue();
                     }
                 });
-
-
-                System.out.println("Название группы -> Количество участников:");
+                printer.print("Название группы -> Количество участников:");
                 for (Map.Entry<String, Integer> l : newList) {
-                    System.out.println(l.getKey() + "  ->  " + l.getValue());
-
+                    printer.print(l.getKey() + "  ->  " + l.getValue());
                 }
             }
         }
@@ -46,11 +44,11 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
 
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
             return true;
         } else {
-            System.out.println("У команды print_ascending_number_of_participants нет аргументов! Попробуйте еще раз");
+            printer.print("У команды print_ascending_number_of_participants нет аргументов! Попробуйте еще раз");
             return false;
         }
     }

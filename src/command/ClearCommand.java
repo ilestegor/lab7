@@ -1,6 +1,7 @@
 package command;
 
 import manager.MusicBandCollection;
+import utility.Printer;
 
 
 /**
@@ -15,23 +16,23 @@ public class ClearCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
             if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                System.out.println("Коллекция уже пустая");
+                printer.print("Коллекция уже пустая");
             } else {
                 MusicBandCollection.getMusicBandLinkedList().clear();
-                System.out.println("Коллекция успешно очищена");
+                printer.print("Коллекция очищена!");
             }
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
             return true;
         } else {
-            System.out.println("У команды clear нет аргументов!");
+            printer.print("У команды clear нет аргументов!");
             return false;
         }
     }

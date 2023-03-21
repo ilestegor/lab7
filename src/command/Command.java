@@ -1,6 +1,7 @@
 package command;
 
 import interfaces.CommandInterface;
+import utility.Printer;
 
 /**
  * Abstract class contains basic methods for executing commands
@@ -21,13 +22,14 @@ public abstract class Command implements CommandInterface {
     public Command(String description, boolean hasArgs) {
         this.description = description;
         this.hasArgs = hasArgs;
+
     }
 
     @Override
-    public abstract void execute();
+    public abstract void execute(Printer printer);
 
     @Override
-    public abstract boolean checkArgument(Object inputArgs);
+    public abstract boolean checkArgument(Printer printer, Object inputArgs);
 
     /**
      * Checks if command has arguments
@@ -64,4 +66,6 @@ public abstract class Command implements CommandInterface {
     public void setArgs(Object args) {
         this.args = args;
     }
+
+
 }

@@ -2,6 +2,7 @@ package command;
 
 import manager.MusicBandCollection;
 import model.MusicBand;
+import utility.Printer;
 
 /**
  * Class contains implementation of filter_starts_with_name command
@@ -16,11 +17,11 @@ public class FilterStartsWithNameCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute(Printer printer) {
         int count = 0;
-        if (checkArgument(getArgs())) {
+        if (checkArgument(new Printer(), getArgs())) {
             if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                System.out.println("Коллекция пуста!");
+                printer.print("Коллекция пуста!");
             } else {
                 for (MusicBand musicBand : MusicBandCollection.getMusicBandLinkedList()) {
                     if (musicBand.getName().startsWith(getArgs().toString())) {
@@ -28,19 +29,18 @@ public class FilterStartsWithNameCommand extends Command {
                         System.out.println(musicBand);
                     }
                 }
-                System.out.println("Количество групп, подходящих под условие " + count);
+                printer.print("Количество групп, подходящих под условие " + count);
                 if (count == 0) {
-                    System.out.println("Групп с такой подстрокой не нашлось!");
+                    printer.print("Групп с такой подстрокой не нашлось!");
                 }
             }
-
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            System.out.println("У команды filter_starts_with_name должен быть аргумент!");
+            printer.print("У команды filter_starts_with_name должен быть аргумент!");
             return false;
         } else {
             return true;

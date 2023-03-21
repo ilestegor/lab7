@@ -1,5 +1,7 @@
 package model;
 
+import manager.validator.LabelValidator;
+
 /**
  * Model of Label, contains getters/setters for fields of class
  *
@@ -13,7 +15,9 @@ public class Label {
     }
 
     public void setLabel(String label) {
-        this.label = label;
+        if (LabelValidator.validate(label)){
+            this.label = label;
+        }
     }
 
     public String getLabel() {

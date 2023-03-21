@@ -1,6 +1,7 @@
 package command;
 
 import manager.MusicBandCollection;
+import utility.Printer;
 
 /**
  * Class contains implementation of info command
@@ -14,20 +15,20 @@ public class InfoCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
-            System.out.println("Тип коллекции: " + MusicBandCollection.getMusicBandLinkedList().getClass().getSimpleName());
-            System.out.println("Дата инициализации: " + MusicBandCollection.getLocalDate().toString().substring(0, 10));
-            System.out.println("Количсетво элементов: " + MusicBandCollection.getMusicBandLinkedList().size());
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
+            printer.print("Тип коллекции: " + MusicBandCollection.getMusicBandLinkedList().getClass().getSimpleName());
+            printer.print("Дата инициализации: " + MusicBandCollection.getLocalDate().toString().substring(0, 10));
+            printer.print("Количсетво элементов: " + MusicBandCollection.getMusicBandLinkedList().size());
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
             return true;
         } else {
-            System.out.println("Команда info не имеет аргументов, попробуйте ввести команду без аргументов!");
+            printer.print("Команда info не имеет аргументов, попробуйте ввести команду без аргументов!");
             return false;
         }
     }

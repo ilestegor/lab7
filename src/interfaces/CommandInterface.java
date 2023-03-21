@@ -1,5 +1,7 @@
 package interfaces;
 
+import utility.Printer;
+
 /**
  * Contains methods for command execution and argument checking
  *
@@ -9,7 +11,7 @@ public interface CommandInterface {
     /**
      * Executes command
      */
-    void execute();
+    void execute(Printer printer);
 
     /**
      * Validate arguments
@@ -18,5 +20,5 @@ public interface CommandInterface {
      * @return
      */
 
-    boolean checkArgument(Object inputArgs);
+    boolean checkArgument(Printer printer, Object inputArgs);
 }

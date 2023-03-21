@@ -1,6 +1,7 @@
 package command;
 
 import parse.YamlWriter;
+import utility.Printer;
 
 /**
  * Class contains implementation of save command
@@ -14,21 +15,19 @@ public class SaveCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
-            YamlWriter yamlWriter = new YamlWriter();
-            yamlWriter.write("data/file.yaml");
-            System.out.println("Коллекция успешно сохранена!");
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
+            YamlWriter yamlWriter = new YamlWriter(new Printer());
+            yamlWriter.write("/Users/ilestegor/Desktop/Универ/1курс/2сем/прога/student-6/data/file.yaml");
         }
-
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
             return true;
         } else {
-            System.out.println("У команды save нет аргументов! Попробуйте еще раз");
+            printer.print("У команды save нет аргументов! Попробуйте еще раз");
             return false;
         }
     }

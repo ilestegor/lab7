@@ -1,6 +1,7 @@
 package command;
 
 import manager.CommandManager;
+import utility.Printer;
 
 import java.util.Map;
 
@@ -16,21 +17,21 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
             int count = 1;
             for (Map.Entry<String, Command> command : CommandManager.getCommandMap().entrySet()) {
-                System.out.println(count++ + ". " + command.getKey() + " " + command.getValue().getDescription());
+                printer.print(count++ + ". " + command.getKey() + " " + command.getValue().getDescription());
             }
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
             return true;
         } else {
-            System.out.println("У команды help нет аргументов, попробуйте еще раз!");
+            printer.print("У команды help нет аргументов, попробуйте еще раз!");
             return false;
         }
     }

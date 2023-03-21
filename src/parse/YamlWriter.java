@@ -5,6 +5,7 @@ import manager.MusicBandCollection;
 import model.MusicBand;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import utility.Printer;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +18,12 @@ import java.io.OutputStreamWriter;
  * @author ilestegor
  */
 public class YamlWriter implements BaseWriter {
+    private Printer printer;
+
+    public YamlWriter(Printer printer) {
+        this.printer = printer;
+    }
+
     @Override
     public void write(String path) {
         DumperOptions options = new DumperOptions();
@@ -25,10 +32,11 @@ public class YamlWriter implements BaseWriter {
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(path))) {
             yaml.dump(new CloneParser().parseToClone(MusicBandCollection.getMusicBandLinkedList().toArray(new MusicBand[0])), writer);
             writer.flush();
+            printer.print("Коллекция успешно сохранена");
         } catch (FileNotFoundException ex) {
-            System.out.println("lol");
+            printer.print("Файл не найден!");
         } catch (IOException e) {
-            System.out.println("lols");
+            printer.print("Что-то пошло не так!");
         }
     }
 }

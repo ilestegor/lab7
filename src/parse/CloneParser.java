@@ -4,7 +4,7 @@ import model.MusicBand;
 import model.MusicBandClone;
 
 /**
- * Parser for making clone if MusicGenre
+ * Parser for making clone of MusicGenre
  *
  * @author ilestegor
  */

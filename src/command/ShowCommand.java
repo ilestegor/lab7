@@ -2,6 +2,7 @@ package command;
 
 import manager.MusicBandCollection;
 import model.MusicBand;
+import utility.Printer;
 
 /**
  * Class contains implementation of show command
@@ -15,10 +16,10 @@ public class ShowCommand extends Command {
     }
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
             if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                System.out.println("Коллекция пуста!");
+                printer.print("Коллекция пуста!");
             } else {
                 for (MusicBand musicBand : MusicBandCollection.getMusicBandLinkedList()) {
                     System.out.println(musicBand);
@@ -28,11 +29,11 @@ public class ShowCommand extends Command {
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
             return true;
         } else {
-            System.out.println("Команда show не имеет аргументов, попробуйте ввести команду без аршументов!");
+            printer.print("Команда show не имеет аргументов, попробуйте ввести команду без аршументов!");
             return false;
         }
     }

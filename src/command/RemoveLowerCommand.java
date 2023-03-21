@@ -2,6 +2,7 @@ package command;
 
 import manager.MusicBandCollection;
 import model.MusicBand;
+import utility.Printer;
 
 import java.util.Iterator;
 
@@ -18,10 +19,10 @@ public class RemoveLowerCommand extends Command {
 
 
     @Override
-    public void execute() {
-        if (checkArgument(getArgs())) {
+    public void execute(Printer printer) {
+        if (checkArgument(new Printer(), getArgs())) {
             if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                System.out.println("Коллекция пуста!");
+                printer.print("Коллекция пуста!");
             } else {
                 if (MusicBandCollection.getIdContainer().contains(Long.parseLong(getArgs().toString()))) {
                     int targetNumber = 0;
@@ -38,25 +39,25 @@ public class RemoveLowerCommand extends Command {
                             iterator.remove();
                         }
                     }
-                    System.out.println("Элементы меньшие чем указнный успешно удалены!");
+                    printer.print("Элементы меньшие чем указнный успешно удалены!");
                 } else {
-                    System.out.println("id c номером " + getArgs() + " нет в коллекции");
+                    printer.print("id c номером " + getArgs() + " нет в коллекции");
                 }
             }
         }
     }
 
     @Override
-    public boolean checkArgument(Object inputArgs) {
+    public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            System.out.println("У команды remove_lower должны быть аргумент (id элемента)");
+            printer.print("У команды remove_lower должны быть аргумент (id элемента)");
             return false;
         } else {
             try {
                 Integer.parseInt(inputArgs.toString());
                 return true;
             } catch (NumberFormatException ex) {
-                System.out.println("Аргумент у команды remove_lower должен быть типа (int). Попробуйте еще раз!");
+                printer.print("Аргумент у команды remove_lower должен быть типа (int). Попробуйте еще раз!");
                 return false;
             }
         }
