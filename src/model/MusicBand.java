@@ -29,15 +29,15 @@ public class MusicBand {
                      LocalDateTime creationDate, Integer numberOfParticipants,
                      int albumsCount, Date establishmentDate,
                      MusicGenre genre, Label label) {
-        this.id = id;
-        this.name = name;
-        this.coordinates = coordinates;
-        this.creationDate = creationDate;
-        this.numberOfParticipants = numberOfParticipants;
-        this.albumsCount = albumsCount;
-        this.establishmentDate = establishmentDate;
-        this.genre = genre;
-        this.label = label;
+        this.setId(id);
+        this.setName(name);
+        this.setCoordinates(coordinates);
+        this.setCreationDate(creationDate);
+        this.setNumberOfParticipants(numberOfParticipants);
+        this.setAlbumsCount(albumsCount);
+        this.setEstablishmentDate(establishmentDate);
+        this.setGenre(genre);
+        this.setLabel(label);
     }
 
     public void setName(String name) {

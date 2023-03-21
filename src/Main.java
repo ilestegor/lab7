@@ -1,5 +1,6 @@
 import manager.MusicBandCollection;
 import manager.UserManager;
+import model.MusicBandClone;
 import parse.YamlReader;
 import utility.Printer;
 

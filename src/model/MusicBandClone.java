@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author ilestegor
  */
-public final class MusicBandClone {
+public class MusicBandClone {
     private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
