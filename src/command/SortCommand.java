@@ -1,6 +1,6 @@
 package command;
 
-import manager.MusicBandCollection;
+import manager.CollectionManager;
 import utility.Printer;
 import utility.SortById;
 
@@ -11,18 +11,18 @@ import utility.SortById;
  * @author ilestegor
  */
 public class SortCommand extends Command {
-    public SortCommand(String description, boolean hasArgs) {
-        super(description, hasArgs);
+    public SortCommand(CollectionManager collectionManager) {
+        super("Команда сортирует коллекцию по id", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                printer.print("Коллекция пуста! Сортировать нечего");
+            if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
+                printer.printNextLine("Коллекция пуста! Сортировать нечего");
             } else {
-                MusicBandCollection.getMusicBandLinkedList().sort(new SortById());
-                printer.print("Коллекция успешно отсортирована!");
+                getMusicBandCollectionManager().getMusicBandLinkedList().sort(new SortById());
+                printer.printNextLine("Коллекция успешно отсортирована!");
             }
         }
     }
@@ -32,8 +32,9 @@ public class SortCommand extends Command {
         if (inputArgs == null) {
             return true;
         } else {
-            printer.print("У команды sort не должно быть аргументов!");
+            printer.printNextLine("У команды sort не должно быть аргументов!");
             return false;
         }
     }
+
 }

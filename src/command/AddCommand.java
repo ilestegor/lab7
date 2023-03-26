@@ -1,8 +1,7 @@
 package command;
 
-import manager.MusicBandCollection;
+import manager.CollectionManager;
 import manager.UserManager;
-import model.MusicBand;
 import utility.Printer;
 
 /**
@@ -12,17 +11,15 @@ import utility.Printer;
  * @author ilestegor
  */
 public class AddCommand extends Command {
-
-
-    public AddCommand(String description, boolean hasArgs) {
-        super(description, hasArgs);
+    public AddCommand(CollectionManager collectionManager) {
+        super("Команда добавлет новый пользоватлеьски элемент в коллекцию", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            MusicBandCollection.addToCollection(UserManager.requestDataForUserMusicBand(new MusicBand()));
-            printer.print("Объект успешно добавлен в коллекцию!");
+            getMusicBandCollectionManager().addToCollection(UserManager.requestDataForUserMusicBand());
+            printer.printNextLine("Объект успешно добавлен в коллекцию!");
         }
     }
 
@@ -31,7 +28,7 @@ public class AddCommand extends Command {
         if (inputArgs == null) {
             return true;
         } else {
-            printer.print("У команды add нет аргументов!");
+            printer.printNextLine("У команды add нет аргументов!");
             return false;
         }
     }

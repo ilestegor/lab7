@@ -1,5 +1,6 @@
 package command;
 
+import manager.CollectionManager;
 import manager.UserManager;
 import utility.Printer;
 
@@ -10,14 +11,14 @@ import utility.Printer;
  * @author ilestegor
  */
 public class ExitCommand extends Command {
-    public ExitCommand(String description, boolean hasArgs) {
-        super(description, false);
+    public ExitCommand(CollectionManager collectionManager) {
+        super("Команда завершает программу без сохранения результата в файл", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            printer.print("Завершение программы!");
+            printer.printThisLine("Завершение программы!");
             UserManager.setIsInWork(false);
         }
     }
@@ -27,10 +28,9 @@ public class ExitCommand extends Command {
         if (inputArgs == null) {
             return true;
         } else {
-            printer.print("Команда exit не имеет аргументов, попробуйте ввести команду без аргументов!");
+            printer.printNextLine("Команда exit не имеет аргументов, попробуйте ввести команду без аргументов!");
             return false;
         }
     }
-
 
 }

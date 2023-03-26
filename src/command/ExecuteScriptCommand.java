@@ -1,5 +1,6 @@
 package command;
 
+import manager.CollectionManager;
 import manager.UserManager;
 import utility.Printer;
 
@@ -17,18 +18,20 @@ import java.util.List;
  * @author ilestegor
  */
 public class ExecuteScriptCommand extends Command {
-    public ExecuteScriptCommand(String description, boolean hasArgs) {
-        super(description, hasArgs);
+    public ExecuteScriptCommand(CollectionManager collectionManager) {
+        super("Команда выполняет скрипт записанный в файле. Принимате путь файла как аргумент.\n " +
+                "IMPORTANT: запись команд в файл скрипта идет в столбик сразу с необходимыми аргуменатми для команд", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            String base = "/Users/ilestegor/Desktop/Универ/1курс/2сем/прога/student-6/data/";
+            String base = System.getenv("ScriptFile");
             String path = base + getArgs();
+
             try {
                 if (new File(path).length() == 0) {
-                    printer.print("Скрипт пустой!");
+                    printer.printNextLine("Скрипт пустой или такого файла не существует!");
                 } else {
                     BufferedReader bf = new BufferedReader(new FileReader(path));
                     String line = bf.readLine();
@@ -41,7 +44,7 @@ public class ExecuteScriptCommand extends Command {
                     UserManager.requestCommandForScript(listOfCommands);
                 }
             } catch (IOException ex) {
-                printer.print("Такого файла не существует! Проверьте, что файл находится в папке");
+                printer.printNextLine("Такого файла не существует! Проверьте, что файл находится в папке");
             }
         }
     }
@@ -49,7 +52,7 @@ public class ExecuteScriptCommand extends Command {
     @Override
     public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            printer.print("Команда execute_script должна принимать аргумент в виде пути к файлу!");
+            printer.printNextLine("Команда execute_script должна принимать аргумент в виде пути к файлу!");
             return false;
         }
         return true;

@@ -1,6 +1,6 @@
 package command;
 
-import manager.MusicBandCollection;
+import manager.CollectionManager;
 import model.MusicBand;
 import utility.Printer;
 
@@ -12,25 +12,27 @@ import utility.Printer;
  */
 public class CountByNumberOfParticipantsCommand extends Command {
 
-    public CountByNumberOfParticipantsCommand(String description, boolean hasArgs) {
-        super(description, hasArgs);
+
+    public CountByNumberOfParticipantsCommand(CollectionManager collectionManager) {
+        super("Команда выводит количество элементов, значение поля numberOfParticipants которых равно заданному", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         int count = 0;
         if (checkArgument(new Printer(), getArgs())) {
-            if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                printer.print("Коллекция пуста!");
+            if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
+                printer.printNextLine("Коллекция пуста!");
             } else {
-                for (MusicBand musicBand : MusicBandCollection.getMusicBandLinkedList()) {
+                for (MusicBand musicBand : getMusicBandCollectionManager().getMusicBandLinkedList()) {
                     if (musicBand.getNumberOfParticipants() == Integer.parseInt(getArgs().toString())) {
                         count++;
                     }
                 }
                 if (count == 0) {
-                    printer.print("Музыкальных групп с таким количеством участников не найдено!");
-                } else printer.print("Количество музыкальных групп с указанным количеством участников: " + count);
+                    printer.printNextLine("Музыкальных групп с таким количеством участников не найдено!");
+                } else
+                    printer.printNextLine("Количество музыкальных групп с указанным количеством участников: " + count);
             }
         }
     }
@@ -44,15 +46,16 @@ public class CountByNumberOfParticipantsCommand extends Command {
             try {
                 int count = Integer.parseInt(getArgs().toString());
                 if (count < 0) {
-                    printer.print("Аргумент должен быть > 0!");
+                    printer.printNextLine("Аргумент должен быть > 0!");
                     return false;
                 } else {
                     return true;
                 }
             } catch (NumberFormatException ex) {
-                printer.print("Команда count_by_number_of_participants имеет аргумент типа  (int)!");
+                printer.printNextLine("Команда count_by_number_of_participants имеет аргумент типа  (int)!");
                 return false;
             }
         }
     }
+
 }

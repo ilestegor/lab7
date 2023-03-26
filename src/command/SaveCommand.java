@@ -1,5 +1,6 @@
 package command;
 
+import manager.CollectionManager;
 import parse.YamlWriter;
 import utility.Printer;
 
@@ -10,14 +11,14 @@ import utility.Printer;
  * @author ilestegor
  */
 public class SaveCommand extends Command {
-    public SaveCommand(String description, boolean hasArgs) {
-        super(description, hasArgs);
+    public SaveCommand(CollectionManager collectionManager) {
+        super("Команда сохраняет коолекцию в файл", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            YamlWriter yamlWriter = new YamlWriter(new Printer());
+            YamlWriter yamlWriter = new YamlWriter(new Printer(), getMusicBandCollectionManager());
             yamlWriter.write("/Users/ilestegor/Desktop/Универ/1курс/2сем/прога/student-6/data/file.yaml");
         }
     }
@@ -27,7 +28,7 @@ public class SaveCommand extends Command {
         if (inputArgs == null) {
             return true;
         } else {
-            printer.print("У команды save нет аргументов! Попробуйте еще раз");
+            printer.printNextLine("У команды save нет аргументов! Попробуйте еще раз");
             return false;
         }
     }

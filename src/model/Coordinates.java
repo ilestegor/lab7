@@ -1,7 +1,7 @@
 package model;
 
-import manager.validator.CoordinateXValidator;
-import manager.validator.CoordinateYValidator;
+import exception.FiledIsNotCorrectException;
+import manager.validator.ModelValidator;
 
 /**
  * Model of Coordinates, contains getters/setter for fields of clas
@@ -11,26 +11,27 @@ import manager.validator.CoordinateYValidator;
 public class Coordinates {
     private Long x;
     private float y;
+    private final ModelValidator modelValidator = new ModelValidator();
 
     public Coordinates() {
     }
-
 
     public Coordinates(Long x, float y) {
         this.x = x;
         this.y = y;
     }
 
+
     public void setX(Long x) {
-        if (CoordinateXValidator.validate(x)) {
+        if (modelValidator.validateCoordinateX(x)) {
             this.x = x;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setY(float y) {
-        if (CoordinateYValidator.validate(y)) {
+        if (modelValidator.validateCoordinateY(y)) {
             this.y = y;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public Long getX() {

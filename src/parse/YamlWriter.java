@@ -1,7 +1,7 @@
 package parse;
 
 import interfaces.BaseWriter;
-import manager.MusicBandCollection;
+import manager.CollectionManager;
 import model.MusicBand;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -18,10 +18,12 @@ import java.io.OutputStreamWriter;
  * @author ilestegor
  */
 public class YamlWriter implements BaseWriter {
-    private Printer printer;
+    private final Printer printer;
+    private final CollectionManager collectionManager;
 
-    public YamlWriter(Printer printer) {
+    public YamlWriter(Printer printer, CollectionManager collectionManager) {
         this.printer = printer;
+        this.collectionManager = collectionManager;
     }
 
     @Override
@@ -30,13 +32,13 @@ public class YamlWriter implements BaseWriter {
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         Yaml yaml = new Yaml(options);
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(path))) {
-            yaml.dump(new CloneParser().parseToClone(MusicBandCollection.getMusicBandLinkedList().toArray(new MusicBand[0])), writer);
+            yaml.dump(new CloneParser().parseToClone(collectionManager.getMusicBandLinkedList().toArray(new MusicBand[0])), writer);
             writer.flush();
-            printer.print("Коллекция успешно сохранена");
+            printer.printNextLine("Коллекция успешно сохранена");
         } catch (FileNotFoundException ex) {
-            printer.print("Файл не найден!");
+            printer.printNextLine("Файл не найден!");
         } catch (IOException e) {
-            printer.print("Что-то пошло не так!");
+            printer.printNextLine("Что-то пошло не так!");
         }
     }
 }

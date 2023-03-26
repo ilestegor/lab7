@@ -1,5 +1,7 @@
 package utility;
 
+import exception.RecursionException;
+
 /**
  * Contains logic for checking recursion when execute_script is running
  *

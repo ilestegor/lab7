@@ -1,6 +1,7 @@
 package model;
 
-import manager.validator.*;
+import exception.FiledIsNotCorrectException;
+import manager.validator.ModelValidator;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -14,13 +15,14 @@ import java.util.Date;
 public class MusicBand {
     private long id; //must be unique, > 0 and generated automatically
     private String name; //filed can't be null or empty
-    private Coordinates coordinates; //field can't be nu;;
+    private Coordinates coordinates; //field can't be null
     private LocalDateTime creationDate; //file can't be null, generated automatically
     private Integer numberOfParticipants; //filed can't be null, must be > 0
     private int albumsCount; //filed must be > 0
     private Date establishmentDate; //field can't be null
     private MusicGenre genre; //field can't be null
     private Label label; //filed can be null
+    private final ModelValidator modelValidator = new ModelValidator();
 
     public MusicBand() {
     }
@@ -41,55 +43,57 @@ public class MusicBand {
     }
 
     public void setName(String name) {
-        if (NameValidator.validate(name)) {
+        if (modelValidator.validateName(name)) {
             this.name = name;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setCoordinates(Coordinates coordinates) {
-        if (CoordinateXValidator.validate(coordinates.getX()) && CoordinateYValidator.validate(coordinates.getY())) {
+        if (modelValidator.validateCoordinateX(coordinates.getX()) && modelValidator.validateCoordinateY(coordinates.getY())) {
             this.coordinates = coordinates;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setNumberOfParticipants(Integer numberOfParticipants) {
-        if (NumberOfParticipantsValidator.validate(numberOfParticipants)) {
+        if (modelValidator.validateNumberOfParticipants(numberOfParticipants)) {
             this.numberOfParticipants = numberOfParticipants;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setAlbumsCount(int albumsCount) {
-        if (AlbumsCountValidator.validate(albumsCount)) {
+        if (modelValidator.validateAlbumsCount(albumsCount)) {
             this.albumsCount = albumsCount;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setEstablishmentDate(Date establishmentDate) {
-        if (EstablishmentDateValidator.validate(establishmentDate)) {
+        if (modelValidator.validateEstablishmentDate(establishmentDate)) {
             this.establishmentDate = establishmentDate;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setGenre(MusicGenre genre) {
-        if (MusicGenreValidator.validate(genre)) {
+        if (modelValidator.validateMusicGenre(genre)) {
             this.genre = genre;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setLabel(Label label) {
-        if (LabelValidator.validate(label)) {
+        if (modelValidator.validateLabel(label)) {
             this.label = label;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setId(long id) {
-        if (IdValidator.validate(id)) {
+        if (modelValidator.validateId(id)) {
             this.id = id;
-        }
+        } else throw new FiledIsNotCorrectException();
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
+        if (modelValidator.validateCreationDate(creationDate)) {
+            this.creationDate = creationDate;
+        } else throw new FiledIsNotCorrectException();
     }
 
 

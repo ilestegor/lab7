@@ -1,6 +1,6 @@
 package command;
 
-import manager.MusicBandCollection;
+import manager.CollectionManager;
 import utility.Printer;
 
 /**
@@ -10,16 +10,16 @@ import utility.Printer;
  * @author ilestegor
  */
 public class InfoCommand extends Command {
-    public InfoCommand(String description, boolean hasArgs) {
-        super(description, false);
+    public InfoCommand(CollectionManager collectionManager) {
+        super("Команда выводит основную информацию о коллекции: тип, дата инициализации, количество элементов", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            printer.print("Тип коллекции: " + MusicBandCollection.getMusicBandLinkedList().getClass().getSimpleName());
-            printer.print("Дата инициализации: " + MusicBandCollection.getLocalDate().toString().substring(0, 10));
-            printer.print("Количсетво элементов: " + MusicBandCollection.getMusicBandLinkedList().size());
+            printer.printNextLine("Тип коллекции: " + getMusicBandCollectionManager().getMusicBandLinkedList().getClass().getSimpleName());
+            printer.printNextLine("Дата инициализации: " + getMusicBandCollectionManager().getLocalDate().toString().substring(0, 10));
+            printer.printNextLine("Количсетво элементов: " + getMusicBandCollectionManager().getMusicBandLinkedList().size());
         }
     }
 
@@ -28,7 +28,7 @@ public class InfoCommand extends Command {
         if (inputArgs == null) {
             return true;
         } else {
-            printer.print("Команда info не имеет аргументов, попробуйте ввести команду без аргументов!");
+            printer.printNextLine("Команда info не имеет аргументов, попробуйте ввести команду без аргументов!");
             return false;
         }
     }

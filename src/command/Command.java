@@ -1,6 +1,7 @@
 package command;
 
 import interfaces.CommandInterface;
+import manager.CollectionManager;
 import utility.Printer;
 
 /**
@@ -10,19 +11,20 @@ import utility.Printer;
  */
 public abstract class Command implements CommandInterface {
     private final String description;
-    private final boolean hasArgs;
+
     private Object args;
+    private final CollectionManager collectionManager;
+
 
     /**
      * Constructor for Command abstract class
      *
      * @param description
-     * @param hasArgs
+     * @param collectionManager
      */
-    public Command(String description, boolean hasArgs) {
+    public Command(String description, CollectionManager collectionManager) {
         this.description = description;
-        this.hasArgs = hasArgs;
-
+        this.collectionManager = collectionManager;
     }
 
     @Override
@@ -36,9 +38,6 @@ public abstract class Command implements CommandInterface {
      *
      * @return true if command has arguments, false if it doesn't
      */
-    public boolean isHasArgs() {
-        return hasArgs;
-    }
 
     /**
      * Method gets description of command
@@ -67,5 +66,7 @@ public abstract class Command implements CommandInterface {
         this.args = args;
     }
 
-
+    public CollectionManager getMusicBandCollectionManager() {
+        return collectionManager;
+    }
 }

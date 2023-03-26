@@ -1,6 +1,6 @@
 package command;
 
-import manager.MusicBandCollection;
+import manager.CollectionManager;
 import model.MusicBand;
 import utility.Printer;
 
@@ -13,18 +13,18 @@ import java.util.*;
  */
 public class PrintFieldAscNumberOfParticipantsCommand extends Command {
 
-    public PrintFieldAscNumberOfParticipantsCommand(String description, boolean hasArgs) {
-        super(description, hasArgs);
+    public PrintFieldAscNumberOfParticipantsCommand(CollectionManager collectionManager) {
+        super("Команда выводит колиечство участников всех групп в порядке возрастания", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            if (MusicBandCollection.getMusicBandLinkedList().isEmpty()) {
-                printer.print("Коллекция пуста");
+            if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
+                printer.printNextLine("Коллекция пуста");
             } else {
                 LinkedHashMap<String, Integer> bandNameAndParticipantsCount = new LinkedHashMap<>();
-                for (MusicBand musicBand : MusicBandCollection.getMusicBandLinkedList()) {
+                for (MusicBand musicBand : getMusicBandCollectionManager().getMusicBandLinkedList()) {
                     bandNameAndParticipantsCount.put(musicBand.getName(), musicBand.getNumberOfParticipants());
                 }
                 List<Map.Entry<String, Integer>> newList = new ArrayList<Map.Entry<String, Integer>>(bandNameAndParticipantsCount.entrySet());
@@ -34,9 +34,9 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
                         return o1.getValue() - o2.getValue();
                     }
                 });
-                printer.print("Название группы -> Количество участников:");
+                printer.printNextLine("Название группы -> Количество участников:");
                 for (Map.Entry<String, Integer> l : newList) {
-                    printer.print(l.getKey() + "  ->  " + l.getValue());
+                    printer.printNextLine(l.getKey() + "  ->  " + l.getValue());
                 }
             }
         }
@@ -48,7 +48,7 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
         if (inputArgs == null) {
             return true;
         } else {
-            printer.print("У команды print_ascending_number_of_participants нет аргументов! Попробуйте еще раз");
+            printer.printNextLine("У команды print_ascending_number_of_participants нет аргументов! Попробуйте еще раз");
             return false;
         }
     }
