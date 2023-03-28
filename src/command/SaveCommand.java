@@ -19,7 +19,7 @@ public class SaveCommand extends Command {
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
             YamlWriter yamlWriter = new YamlWriter(new Printer(), getMusicBandCollectionManager());
-            yamlWriter.write("/Users/ilestegor/Desktop/Универ/1курс/2сем/прога/student-6/data/file.yaml");
+            yamlWriter.write(System.getenv("YamlFile"));
         }
     }
 
