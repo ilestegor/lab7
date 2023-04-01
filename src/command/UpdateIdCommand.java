@@ -14,25 +14,17 @@ import utility.Printer;
 public class UpdateIdCommand extends Command {
 
     public UpdateIdCommand(CollectionManager collectionManager) {
-        super("Команда принимает в видео аргумента id элеменета, которые находится в коллекции и обновляет его данные", collectionManager);
+        super("Команда принимает в виде аргумента id элеменета, который находится в коллекции и обновляет его данные", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
-        int count = 0;
         if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
             printer.printNextLine("Коллекция пуста!");
         } else {
             if (checkArgument(new Printer(), getArgs())) {
-                for (MusicBand musicBand : getMusicBandCollectionManager().getMusicBandLinkedList()) {
-                    if (musicBand.getId() == Long.parseLong(getArgs().toString())) {
-                        count++;
-                        musicBand.updateElement(UserManager.requestDataForUserMusicBand());
-                    }
-                }
-                if (count == 0) {
-                    printer.printNextLine("Элемента с id " + getArgs() + " не найдено!");
-                }
+                int userInputId = Integer.parseInt(getArgs().toString());
+                getMusicBandCollectionManager().updateElementInCollection(getMusicBandCollectionManager().findModelById(userInputId), userInputId);
             }
         }
     }
@@ -40,7 +32,7 @@ public class UpdateIdCommand extends Command {
     @Override
     public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            printer.printNextLine("У команды update должен быть аргумент id (id элемента, значения которого вы хотите обновить). Попробуйте еще раз!");
+            printer.printNextLine("У команды update должен быть аргумент id (id элемента, значение которого вы хотите обновить). Попробуйте еще раз!");
             return false;
         } else {
             try {

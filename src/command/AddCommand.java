@@ -12,14 +12,15 @@ import utility.Printer;
  */
 public class AddCommand extends Command {
     public AddCommand(CollectionManager collectionManager) {
-        super("Команда добавлет новый пользоватлеьски элемент в коллекцию", collectionManager);
+        super("Команда добавляет новый пользоватлеьский элемент в коллекцию", collectionManager);
     }
 
     @Override
     public void execute(Printer printer) {
         if (checkArgument(new Printer(), getArgs())) {
-            getMusicBandCollectionManager().addToCollection(UserManager.requestDataForUserMusicBand());
-            printer.printNextLine("Объект успешно добавлен в коллекцию!");
+            if (getMusicBandCollectionManager().getMusicBandLinkedList().add(UserManager.requestDataForUserMusicBand())){
+                printer.printNextLine("Объект успешно добавлен в коллекцию!");
+            } else printer.printNextLine("Объект не добавлен в коллекцию! Попробуйте еще раз");
         }
     }
 

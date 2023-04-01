@@ -33,7 +33,7 @@ public class ShowCommand extends Command {
         if (inputArgs == null) {
             return true;
         } else {
-            printer.printNextLine("Команда show не имеет аргументов, попробуйте ввести команду без аршументов!");
+            printer.printNextLine("Команда show не имеет аргументов, попробуйте ввести команду без аргументов!");
             return false;
         }
     }

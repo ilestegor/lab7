@@ -28,23 +28,25 @@ public class ExecuteScriptCommand extends Command {
         if (checkArgument(new Printer(), getArgs())) {
             String base = System.getenv("ScriptFile");
             String path = base + getArgs();
-
+            File scriptFile = new File(path);
             try {
-                if (new File(path).length() == 0) {
+                if (scriptFile.length() == 0) {
                     printer.printNextLine("Скрипт пустой или такого файла не существует!");
-                } else {
+                } else if (scriptFile.canRead()){
                     BufferedReader bf = new BufferedReader(new FileReader(path));
                     String line = bf.readLine();
                     List<String> listOfCommands = new ArrayList<>();
                     while (line != null) {
-                        listOfCommands.add(line);
-                        line = bf.readLine();
+                            listOfCommands.add(line);
+                            line = bf.readLine();
                     }
                     bf.close();
                     UserManager.requestCommandForScript(listOfCommands);
+                } else {
+                    throw new IOException();
                 }
             } catch (IOException ex) {
-                printer.printNextLine("Такого файла не существует! Проверьте, что файл находится в папке");
+                printer.printNextLine("Отсутствую права на чтение файла!");
             }
         }
     }
@@ -52,7 +54,7 @@ public class ExecuteScriptCommand extends Command {
     @Override
     public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            printer.printNextLine("Команда execute_script должна принимать аргумент в виде пути к файлу!");
+            printer.printNextLine("Команда execute_script должна принимать аргумент в виде названия файла!");
             return false;
         }
         return true;

@@ -6,17 +6,21 @@ package manager.validator;
  * @author ilestegor
  */
 public class ModelValidator {
+    private static final int ZERO = 0;
+    private static final Long COORDINATE_X_MIN_VALUE = -611L;
+    private static final float COORDINATE_Y_MAX_VALUE = 505.0f;
+
 
     public boolean validateAlbumsCount(Object value) {
-        return (Integer) value > 0;
+        return (Integer) value > ZERO;
     }
 
     public boolean validateCoordinateX(Object value) {
-        return value != null && (long) value > -611;
+        return value != null && (long) value > COORDINATE_X_MIN_VALUE;
     }
 
     public boolean validateCoordinateY(Object value) {
-        return (float) value <= 505;
+        return (float) value <= COORDINATE_Y_MAX_VALUE;
     }
 
     public boolean validateCreationDate(Object value) {
@@ -28,7 +32,7 @@ public class ModelValidator {
     }
 
     public boolean validateId(Object value) {
-        return (long) value > 0;
+        return (long) value > ZERO;
     }
 
     public boolean validateLabel(Object value) {
@@ -44,6 +48,6 @@ public class ModelValidator {
     }
 
     public boolean validateNumberOfParticipants(Object value) {
-        return value != null && (Integer) value > 0;
+        return value != null && (Integer) value > ZERO;
     }
 }

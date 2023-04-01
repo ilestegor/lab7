@@ -40,7 +40,8 @@ public class FilterStartsWithNameCommand extends Command {
     @Override
     public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            printer.printNextLine("У команды filter_starts_with_name должен быть аргумент!");
+            printer.printNextLine("У команды filter_starts_with_name должен быть аргумент (подстрока, с которой начинается название музыкальной группы) \n" +
+                    "IMPORTANT: Регистр подстроки важен! Если название начинается с большой буквы, а Вы ввели маленькую, или наоборот, то музыкальная группы найдена не будет");
             return false;
         } else {
             return true;

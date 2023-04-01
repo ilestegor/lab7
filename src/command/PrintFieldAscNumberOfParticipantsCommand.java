@@ -42,7 +42,6 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
         }
     }
 
-
     @Override
     public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {

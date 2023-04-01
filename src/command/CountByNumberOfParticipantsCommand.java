@@ -4,6 +4,8 @@ import manager.CollectionManager;
 import model.MusicBand;
 import utility.Printer;
 
+import java.util.Objects;
+
 /**
  * Class contains implementation of count_by_number_of_participants command
  * Counts by number of participants and outputs amount of elements with the same number of participants
@@ -21,11 +23,12 @@ public class CountByNumberOfParticipantsCommand extends Command {
     public void execute(Printer printer) {
         int count = 0;
         if (checkArgument(new Printer(), getArgs())) {
+            int userCountInput = Integer.parseInt(getArgs().toString());
             if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
                 printer.printNextLine("Коллекция пуста!");
             } else {
                 for (MusicBand musicBand : getMusicBandCollectionManager().getMusicBandLinkedList()) {
-                    if (musicBand.getNumberOfParticipants() == Integer.parseInt(getArgs().toString())) {
+                    if (musicBand.getNumberOfParticipants() == userCountInput) {
                         count++;
                     }
                 }

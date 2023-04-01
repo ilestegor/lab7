@@ -2,7 +2,7 @@ package command;
 
 import manager.CollectionManager;
 import utility.Printer;
-import utility.SortById;
+import utility.SortByName;
 
 /**
  * Class contains implementation of sort command
@@ -12,7 +12,7 @@ import utility.SortById;
  */
 public class SortCommand extends Command {
     public SortCommand(CollectionManager collectionManager) {
-        super("Команда сортирует коллекцию по id", collectionManager);
+        super("Команда сортирует коллекцию по названию музыкальной группы", collectionManager);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class SortCommand extends Command {
             if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
                 printer.printNextLine("Коллекция пуста! Сортировать нечего");
             } else {
-                getMusicBandCollectionManager().getMusicBandLinkedList().sort(new SortById());
+                getMusicBandCollectionManager().getMusicBandLinkedList().sort(new SortByName());
                 printer.printNextLine("Коллекция успешно отсортирована!");
             }
         }

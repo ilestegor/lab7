@@ -50,7 +50,7 @@ public class RemoveLowerCommand extends Command {
     @Override
     public boolean checkArgument(Printer printer, Object inputArgs) {
         if (inputArgs == null) {
-            printer.printNextLine("У команды remove_lower должны быть аргумент (id элемента)");
+            printer.printNextLine("У команды remove_lower должен быть аргумент (id элемента)");
             return false;
         } else {
             try {

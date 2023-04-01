@@ -17,18 +17,29 @@ import java.util.Scanner;
  * Builder of MusicBand object using Builder pattern
  */
 public class MusicBandBuilder implements IMusicBandBuilder {
-    private long id; //must be unique, > 0 and generated automatically
-    private String name; //filed can't be null or empty
-    private Coordinates coordinates; //field can't be null
-    private LocalDateTime creationDate; //file can't be null, generated automatically
-    private Integer numberOfParticipants; //filed can't be null, must be > 0
-    private int albumsCount; //filed must be > 0
-    private Date establishmentDate; //field can't be null
-    private MusicGenre genre; //field can't be null
-    private Label label; //filed can be null
+    private long id;
+    private String name;
+    private Coordinates coordinates;
+    private LocalDateTime creationDate;
+    private Integer numberOfParticipants;
+    private int albumsCount;
+    private Date establishmentDate;
+    private MusicGenre genre;
+    private Label label;
     private final Printer printer = new Printer();
     private final Scanner scanner = new Scanner(System.in);
     private final ModelValidator modelValidator = new ModelValidator();
+    private static final int MAX_ID = 10000000;
+    private static final Long MAX_X_COORDINATE = -612L;
+    private static final float MAX_Y_COORDINATE = 506.0f;
+    private static final float Y_DEFAULT_VALUE = 0.0f;
+    private static final int ZERO_VALUE = 0;
+    private static final int YEAR_INDEX = 0;
+    private static final int MONTH_INDEX = 1;
+    private static final int DAY_INDEX = 2;
+    private static final int MAX_YEAR = 2023;
+    private static final int MAX_MONTH = 12;
+    private static final int MAX_DAY = 31;
 
     public MusicBandBuilder() {
         super();
@@ -37,8 +48,7 @@ public class MusicBandBuilder implements IMusicBandBuilder {
     @Override
     public IMusicBandBuilder buildId() {
         Random random = new Random();
-        final int upper = 10000000;
-        this.id = random.nextLong(upper);
+        this.id = random.nextLong(MAX_ID);
         return this;
     }
 
@@ -62,8 +72,8 @@ public class MusicBandBuilder implements IMusicBandBuilder {
         var coordinateXInput = "";
         var coordinateYInput = "";
 
-        Long x = (long) -612;
-        float y = 506;
+        Long x = MAX_X_COORDINATE;
+        float y = MAX_Y_COORDINATE;
         do {
             try {
                 printer.printThisLine("\nВведите координату X типа (int), координата должна быть > -611 и не может быть пропущена: ");
@@ -71,7 +81,7 @@ public class MusicBandBuilder implements IMusicBandBuilder {
                 if (!coordinateXInput.isEmpty()) {
                     x = Long.parseLong(coordinateXInput);
                 }
-                if (x <= -611) {
+                if (x <= MAX_X_COORDINATE) {
                     printer.printNextLine("Невалидное поле, введите число (int) < 611");
                 }
             } catch (NumberFormatException ex) {
@@ -83,8 +93,8 @@ public class MusicBandBuilder implements IMusicBandBuilder {
                 printer.printThisLine("\nВведите координату Y типа (float), координата должна быть <=505 или пропустите этот ввод, нажав enter/return.IMPORTANT(при пропуске, значение становится 0): ");
                 coordinateYInput = scanner.nextLine().strip();
                 if (coordinateYInput.isEmpty()) {
-                    y = 0.0f;
-                } else if (Float.parseFloat(coordinateYInput) > 505.0) {
+                    y = Y_DEFAULT_VALUE;
+                } else if (Float.parseFloat(coordinateYInput) > MAX_Y_COORDINATE - 1) {
                     printer.printNextLine("Введите число (float) <= 505.0 или пропустите ввод, нажав enter");
                 } else {
                     y = Float.parseFloat(coordinateYInput.replace(",", "."));
@@ -106,7 +116,7 @@ public class MusicBandBuilder implements IMusicBandBuilder {
     @Override
     public IMusicBandBuilder buildNumberOfParticipants() {
         var numberInput = "";
-        Integer numberOfParticipants = 0;
+        Integer numberOfParticipants = ZERO_VALUE;
         do {
             try {
                 printer.printThisLine("\nВведите количество участников > 0 (int): ");
@@ -115,7 +125,7 @@ public class MusicBandBuilder implements IMusicBandBuilder {
                     numberOfParticipants = Integer.parseInt(numberInput);
                     this.numberOfParticipants = numberOfParticipants;
                 }
-                if (numberOfParticipants <= 0) {
+                if (numberOfParticipants <= ZERO_VALUE) {
                     printer.printNextLine("Введите число (int) > 0");
                 }
             } catch (NumberFormatException ex) {
@@ -128,7 +138,7 @@ public class MusicBandBuilder implements IMusicBandBuilder {
     @Override
     public IMusicBandBuilder buildAlbumsCount() {
         var albumsCountInput = "";
-        int albumsCount = 0;
+        int albumsCount = ZERO_VALUE;
         do {
             try {
                 printer.printThisLine("\nВведите количество альбомов (int > 0): ");
@@ -137,7 +147,7 @@ public class MusicBandBuilder implements IMusicBandBuilder {
                     albumsCount = Integer.parseInt(albumsCountInput);
                     this.albumsCount = albumsCount;
                 }
-                if (albumsCount <= 0) {
+                if (albumsCount <= ZERO_VALUE) {
                     printer.printNextLine("Введите число (int) > 0");
                 }
             } catch (NumberFormatException ex) {
@@ -157,9 +167,9 @@ public class MusicBandBuilder implements IMusicBandBuilder {
             try {
                 if (!estDateUserInput.isEmpty()) {
                     String[] estDateList = estDateUserInput.split("-");
-                    if (((Integer.parseInt(estDateList[0]) > 2023) || (estDateList[0].length() < 4) || (Integer.parseInt(estDateList[0]) < 0))
-                            || ((Integer.parseInt(estDateList[1]) > 12) || (Integer.parseInt(estDateList[1]) < 0))
-                            || ((Integer.parseInt(estDateList[2]) > 31) || (Integer.parseInt(estDateList[2]) < 0))) {
+                    if (((Integer.parseInt(estDateList[YEAR_INDEX]) > MAX_YEAR) || (estDateList[YEAR_INDEX].length() < 4) || (Integer.parseInt(estDateList[YEAR_INDEX]) < ZERO_VALUE))
+                            || ((Integer.parseInt(estDateList[MONTH_INDEX]) > MAX_MONTH) || (Integer.parseInt(estDateList[MONTH_INDEX]) < ZERO_VALUE))
+                            || ((Integer.parseInt(estDateList[DAY_INDEX]) > MAX_DAY) || (Integer.parseInt(estDateList[DAY_INDEX]) < ZERO_VALUE))) {
                         printer.printNextLine("Невалидная дата!");
                     } else {
                         estDate = estDateUserInput;
@@ -171,9 +181,9 @@ public class MusicBandBuilder implements IMusicBandBuilder {
         } while (!modelValidator.validateEstablishmentDate(estDate));
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date date = format.parse(estDateUserInput);
-            this.establishmentDate = date;
+            this.establishmentDate = format.parse(estDateUserInput);
         } catch (ParseException e) {
+            printer.printNextLine("Во время ввода даты что-то пошло не так! Попробуйте еще раз!");
         }
         return this;
     }

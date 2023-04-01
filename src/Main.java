@@ -1,11 +1,16 @@
 import manager.CollectionManager;
 import manager.CommandManager;
 import manager.UserManager;
+import model.Coordinates;
+import model.Label;
+import model.MusicBand;
+import model.MusicGenre;
 import parse.YamlReader;
 import utility.Printer;
 
 import javax.xml.stream.XMLStreamWriter;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Main {
     public static void main(String[] args) {

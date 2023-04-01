@@ -22,6 +22,8 @@ public class UserManager {
     private static final Scanner scanner;
     private static boolean isInWork;
     private static final Printer printer = new Printer();
+    private static final int COMMAND_NAME_POSITION = 0;
+    private static final int COMMAND_ARGUMENT_POSITION = 1;
 
     static {
         Printer printer = new Printer();
@@ -29,7 +31,7 @@ public class UserManager {
         scanner = new Scanner(System.in);
         isInWork = true;
         printer.printNextLine("Приложение запущено!");
-        printer.printNextLine("Чтобы ознакомиться c командами введите комануд help");
+        printer.printNextLine("Чтобы ознакомиться c командами, введите команду help");
     }
 
     /**
@@ -58,15 +60,15 @@ public class UserManager {
     public static void requestPlainCommand(String line) {
         String[] commandAndArgument = line.split(" ");
         String argument;
-        String command = commandAndArgument[0];
+        String command = commandAndArgument[COMMAND_NAME_POSITION];
         if (commandAndArgument.length == 1) {
             argument = null;
             command = command.toLowerCase();
         } else if (commandAndArgument.length == 2) {
-            argument = commandAndArgument[1];
+            argument = commandAndArgument[COMMAND_ARGUMENT_POSITION];
             command = command.toLowerCase();
         } else {
-            printer.printNextLine("Команда или аргумент введены неверно!");
+            printer.printNextLine("Нужно ввести команду! Воспользуйтесь командой help для просмотра списка всех доступных команд");
             return;
         }
         if (commandMap.containsKey(command)) {
@@ -74,7 +76,7 @@ public class UserManager {
             commandMap.get(command).execute(new Printer());
 
         } else {
-            printer.printNextLine("Команды с названием " + commandAndArgument[0] + " не существует! Для уточнения команды воспользуйтесь командой \"help\" ");
+            printer.printNextLine("Команды с названием " + commandAndArgument[COMMAND_NAME_POSITION] + " не существует! Для уточнения команды воспользуйтесь командой help");
         }
     }
 

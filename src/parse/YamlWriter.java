@@ -35,10 +35,8 @@ public class YamlWriter implements BaseWriter {
             yaml.dump(new CloneParser().parseToClone(collectionManager.getMusicBandLinkedList().toArray(new MusicBand[0])), writer);
             writer.flush();
             printer.printNextLine("Коллекция успешно сохранена");
-        } catch (FileNotFoundException ex) {
-            printer.printNextLine("Файл не найден!");
         } catch (IOException e) {
-            printer.printNextLine("Что-то пошло не так!");
+            printer.printNextLine("Отсутсвуют права на файл! Коллекция не сохранена в файл");
         }
     }
 }

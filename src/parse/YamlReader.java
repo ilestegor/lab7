@@ -7,10 +7,8 @@ import interfaces.BaseReader;
 import model.MusicBand;
 import utility.Printer;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.AccessDeniedException;
 
 /**
  * Parser that reads Yaml from file, adding converted object to collection
@@ -33,8 +31,10 @@ public class YamlReader implements BaseReader {
         try {
             InputStreamReader input = new InputStreamReader(new FileInputStream(path));
             musicBands = yamlMapper.readValue(input, MusicBand[].class);
+        } catch (FileNotFoundException ex){
+            printer.printNextLine("Файл не найден или отсутсвуют права на файл!");
         } catch (IOException ex) {
-            printer.printNextLine("Файл не найден или файл пустой или поля у объектов неверны. Проверьте файл и валидность данных!");
+            printer.printNextLine("Файл пустой или поля у объектов невалидны. Проверьте файл и валидность данных!");
         } catch (ClassCastException ex) {
             printer.printNextLine("Тип введенного поля не соответсвует требуемому типу! Попробуйте еще раз");
         }

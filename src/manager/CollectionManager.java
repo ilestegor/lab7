@@ -5,6 +5,7 @@ import model.MusicBand;
 import parse.YamlReader;
 import utility.Printer;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -33,10 +34,11 @@ public class CollectionManager {
      *
      * @param musicBand
      */
-    public void validateAndAddToCollection(MusicBand musicBand) {
+    public boolean validateAndAddToCollection(MusicBand musicBand) {
         if (idContainer.contains(musicBand.getId())) {
+            musicBandLinkedList.remove(musicBand);
             printer.printNextLine("Объект с id" + musicBand.getId() + " уже существует! Объект не добавлен в коллекцию");
-            return;
+            return false;
         }
         idContainer.add(musicBand.getId());
         if (modelValidator.validateId(musicBand.getId()) && modelValidator.validateName(musicBand.getName())
@@ -44,9 +46,11 @@ public class CollectionManager {
                 && modelValidator.validateCoordinateY(musicBand.getCoordinates().getY()) && modelValidator.validateCreationDate(musicBand.getCreationDate())
                 && modelValidator.validateNumberOfParticipants(musicBand.getNumberOfParticipants()) && modelValidator.validateAlbumsCount(musicBand.getAlbumsCount())
                 && modelValidator.validateEstablishmentDate(musicBand.getEstablishmentDate()) && modelValidator.validateMusicGenre(musicBand.getGenre()) && modelValidator.validateLabel(musicBand.getLabel())) {
-            addToCollection(musicBand);
+            musicBandLinkedList.add(musicBand);
+            return true;
         } else {
             printer.printNextLine("Объект с id " + musicBand.getId() + " имеет невалидные поля! Объект не загружен в коллекцию");
+            return false;
         }
     }
 
@@ -63,9 +67,10 @@ public class CollectionManager {
                     validateAndAddToCollection(m);
                 }
             }
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
             printer.printNextLine("Что-то пошло не так во время загрузки коллекции");
         }
+
     }
 
     /**
@@ -87,6 +92,11 @@ public class CollectionManager {
         } else printer.printNextLine("Объекта с введенным id не существует");
     }
 
+    public void updateElementInCollection(MusicBand musicBand, Integer userInput){
+        if (findModelById(userInput) != null){
+            musicBand.updateElement(UserManager.requestDataForUserMusicBand());
+        } else printer.printNextLine("Объекта с id " + userInput + " нет в коллекции!");
+    }
     /**
      * Finds object by id
      *
@@ -103,15 +113,6 @@ public class CollectionManager {
     }
 
     /**
-     * Method for adding new objects to collection via add command
-     *
-     * @param musicBand
-     */
-    public void addToCollection(MusicBand musicBand) {
-        musicBandLinkedList.add(musicBand);
-    }
-
-    /**
      * Getting container with ids for all objects in collection
      *
      * @return HashSet with ids
@@ -123,7 +124,7 @@ public class CollectionManager {
     /**
      * Getting localDate for collection initialization
      *
-     * @return LocalDateTime object with cuurent date
+     * @return LocalDateTime object with current date
      */
     public LocalDateTime getLocalDate() {
         return creationDate;
