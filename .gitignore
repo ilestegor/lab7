@@ -1,0 +1,11 @@
+.idea/
+*.iml
+out/
+docs/
+lib/
+jars/
+lab5.iml
+log.config
+log.server_log.txt
+script.txt
+README.md
