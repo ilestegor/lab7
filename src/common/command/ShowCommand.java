@@ -9,8 +9,11 @@ import common.network.ResponseFactory;
 import common.utility.Printer;
 import server.model.MusicBand;
 
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Class contains implementation of show stuff.command
@@ -40,6 +43,7 @@ public class ShowCommand extends Command {
             return new ResponseFactory().createResponse("Коллекция пустая!");
         } else {
             ArrayList<String> musicBandShowCommandList = new ArrayList<>();
+            getMusicBandCollectionManager().getMusicBandLinkedList().sort((o1, o2) -> (int) (o1.getCoordinates().getX() - o2.getCoordinates().getX()));
             getMusicBandCollectionManager().getMusicBandLinkedList().stream().map(MusicBand::toString).forEachOrdered(musicBandShowCommandList::add);
             return new ResponseFactory().createResponse(String.join("", musicBandShowCommandList));
         }

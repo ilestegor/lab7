@@ -8,7 +8,6 @@ import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
 import common.utility.Printer;
-import server.model.MusicBand;
 
 /**
  * Class contains implementation of count_by_number_of_participants stuff.command

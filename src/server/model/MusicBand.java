@@ -20,7 +20,7 @@ public class MusicBand implements Serializable {
     private long id; //must be unique, > 0 and generated automatically
     private String name; //filed can't be null or empty
     private Coordinates coordinates; //field can't be null
-    private LocalDateTime creationDate; //file can't be null, generated automatically
+    private LocalDateTime creationDate; //filed can't be null, generated automatically
     private Integer numberOfParticipants; //filed can't be null, must be > 0
     private int albumsCount; //filed must be > 0
     private Date establishmentDate; //field can't be null

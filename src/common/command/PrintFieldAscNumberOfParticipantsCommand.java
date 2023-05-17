@@ -12,8 +12,6 @@ import server.model.MusicBand;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toMap;
-
 /**
  * Class contains implementation of print_filed_ascending_number_of_participants
  *
@@ -42,7 +40,7 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
         if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
             return new ResponseFactory().createResponse("Коллекция пуста");
         } else {
-            LinkedHashMap<String, Integer> bandNameAndParticipantsCount =  getMusicBandCollectionManager().getMusicBandLinkedList().stream().collect(Collectors.toMap(MusicBand::getName, MusicBand::getNumberOfParticipants, (v1, v2) -> v2, LinkedHashMap::new)); //from list to linkedhashmap
+            LinkedHashMap<String, Integer> bandNameAndParticipantsCount = getMusicBandCollectionManager().getMusicBandLinkedList().stream().collect(Collectors.toMap(MusicBand::getName, MusicBand::getNumberOfParticipants, (v1, v2) -> v2, LinkedHashMap::new)); //from list to linkedhashmap
             List<Map.Entry<String, Integer>> newList = new ArrayList<>(bandNameAndParticipantsCount.entrySet());
             newList.sort(Comparator.comparingInt(Map.Entry::getValue));
             ArrayList<String> bandsForResponse = new ArrayList<>();

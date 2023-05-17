@@ -8,7 +8,7 @@ import java.io.Serializable;
  *
  * @author ilestegor
  */
-public enum MusicGenre implements Serializable {
+public enum MusicGenre {
 
     ROCK("1"),
     PROGRESSIVE_ROCK("2"),

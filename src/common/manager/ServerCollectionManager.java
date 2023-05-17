@@ -64,7 +64,7 @@ public class ServerCollectionManager {
      */
     public void readToCollection(YamlReader yamlReader) {
         try {
-            MusicBand[] yaml = yamlReader.read("src/file.yaml");
+            MusicBand[] yaml = yamlReader.read(System.getenv("YamlFile"));
             if (yaml != null) {
                 for (MusicBand m : yaml) {
                     validateAndAddToCollection(m);

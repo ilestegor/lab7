@@ -1,6 +1,6 @@
 package common.exception;
 
-public class CantBeSendException extends RuntimeException{
+public class CantBeSendException extends RuntimeException {
     public CantBeSendException(String message) {
         super(message);
     }

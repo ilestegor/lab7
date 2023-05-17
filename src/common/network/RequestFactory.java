@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class RequestFactory implements Serializable {
     @Serial
     private static final long serialVersionUID = 357961990536912322L;
+
     public Request createRequest(String nameOfCommand, String[] args) {
         return new Request(new CommandDTO(nameOfCommand), RequestBodyFactory.createRequestBody(args));
     }

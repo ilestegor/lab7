@@ -11,8 +11,12 @@ import server.network.ServerConnection;
 import server.parse.YamlReader;
 import server.parse.YamlWriter;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.SocketException;
+import java.util.Scanner;
 
 public class Server {
     Response response;
@@ -21,10 +25,12 @@ public class Server {
     CommandManager cm;
     YamlReader yamlReader;
     YamlWriter yamlWriter;
+    Scanner scanner;
+    InputStream inputStream;
 
     public void run() {
         try {
-            serverConnection = new ServerConnection(32458);
+            serverConnection = new ServerConnection(Integer.parseInt(System.getenv("PORT")));
             sc = new ServerCollectionManager();
             boolean isRunning = true;
             MainServerApp.LOGGER.info("Сервер начал работу");
@@ -32,6 +38,8 @@ public class Server {
             yamlReader = new YamlReader(new Printer());
             sc.readToCollection(yamlReader);
             yamlWriter = new YamlWriter(sc);
+            scanner = new Scanner(System.in);
+            inputStream = new BufferedInputStream(System.in);
 
             while (isRunning) {
                 try {
@@ -46,7 +54,12 @@ public class Server {
                     MainServerApp.LOGGER.info("Отправлен ответ на команду "
                             + request.getCommandDTO().getCommandName() + " клиенту " + serverConnection.getDpack().getAddress().getHostName()
                             + " " + serverConnection.getDpack().getPort());
-                    yamlWriter.write(System.getenv("YamlFile"));
+
+                    if (inputStream.available() > 0) {
+                        if (scanner.nextLine().equals("save")){
+                            yamlWriter.write(System.getenv("YamlFile"));
+                        } continue;
+                    }
                     serverConnection.disconnect();
                 } catch (IOException ex) {
                     MainServerApp.LOGGER.warning("Ошибка IO");

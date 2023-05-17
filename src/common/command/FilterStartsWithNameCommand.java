@@ -7,7 +7,6 @@ import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
 import common.utility.Printer;
-import server.model.MusicBand;
 
 /**
  * Class contains implementation of filter_starts_with_name stuff.command
