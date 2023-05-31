@@ -26,7 +26,7 @@ public class Client {
     public void run() {
         Printer printer = new Printer();
         try {
-            clientConnection = new ClientConnection(InetAddress.getLocalHost(),  Integer.parseInt(System.getenv("PORT")));
+            clientConnection = new ClientConnection(InetAddress.getLocalHost(), Integer.parseInt(System.getenv("PORT")));
             clientConnection.connect(clientConnection.getAddress().getAddress(), clientConnection.getPort());
             userManager = new UserManager();
             printer.printNextLine("---------- " + LocalDateTime.now().toString().substring(0, 10) + " ---------");

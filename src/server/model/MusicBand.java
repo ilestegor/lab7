@@ -3,6 +3,7 @@ package server.model;
 import common.exception.FiledIsNotCorrectException;
 import common.validators.ModelValidator;
 
+import java.io.NotSerializableException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -18,7 +18,6 @@ public class ClientConnection implements Connection, PackageSeparator {
     private final DatagramChannel client;
     private final InetSocketAddress address;
     private ByteBuffer byteBuffer;
-//    2048 bytes = 2Kb; возможно примерно 1000 слов
     private final int BUFFER = 2048;
     private final int MAX_BUFFER = BUFFER - 1;
     private final int port;

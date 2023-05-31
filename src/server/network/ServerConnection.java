@@ -17,6 +17,7 @@ public class ServerConnection implements Connection, PackageSeparator {
     private final byte[] buffer;
 
 
+
     public ServerConnection(int port) throws SocketException {
         this.socket = new DatagramSocket(port);
         socket.setReuseAddress(true);
@@ -26,11 +27,17 @@ public class ServerConnection implements Connection, PackageSeparator {
     public Request receiveDataFromClient() throws IOException, ClassNotFoundException {
         ArrayList<byte[]> arrayListOfReceivedBytes = new ArrayList<>();
         dpack = new DatagramPacket(buffer, BUFFER - 1);
-        socket.receive(dpack);
-        connect(dpack.getAddress(), dpack.getPort());
-        arrayListOfReceivedBytes.add(buffer);
-        byte[] data = merge(arrayListOfReceivedBytes);
-        return (Request) Serializer.deserialize(data);
+        socket.setSoTimeout(2_000);
+        try {
+            socket.receive(dpack);
+            connect(dpack.getAddress(), dpack.getPort());
+            arrayListOfReceivedBytes.add(buffer);
+            byte[] data = merge(arrayListOfReceivedBytes);
+            return (Request) Serializer.deserialize(data);
+        } catch (SocketTimeoutException ex){
+            disconnect();
+        }
+        return null;
     }
 
     public void sendDataToClient(Response response) throws IOException {

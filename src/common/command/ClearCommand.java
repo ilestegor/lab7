@@ -36,7 +36,8 @@ public class ClearCommand extends Command {
     public Response execute(Request request) {
         if (!getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
             getMusicBandCollectionManager().clearCollection();
-            return new ResponseFactory().createResponse("Коллекция очищена!");
+            if (getMusicBandCollectionManager().getMusicBandLinkedList().size() == 0)
+                return new ResponseFactory().createResponse("Коллекция очищена!");
         }
         return new ResponseFactory().createResponse("Коллекция пустая");
     }

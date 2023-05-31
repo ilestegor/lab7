@@ -1,7 +1,6 @@
 package server.model;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * Contains enums MusicGenre

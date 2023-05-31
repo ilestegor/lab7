@@ -1,5 +1,6 @@
 package server;
 
+import common.interfaces.BaseWriter;
 import common.manager.CommandManager;
 import common.manager.ServerCollectionManager;
 import common.manager.UserManager;
@@ -11,9 +12,8 @@ import server.network.ServerConnection;
 import server.parse.YamlReader;
 import server.parse.YamlWriter;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketException;
 import java.util.Scanner;
@@ -24,9 +24,9 @@ public class Server {
     ServerCollectionManager sc;
     CommandManager cm;
     YamlReader yamlReader;
-    YamlWriter yamlWriter;
+    BaseWriter yamlWriter;
     Scanner scanner;
-    InputStream inputStream;
+    Request request;
 
     public void run() {
         try {
@@ -39,36 +39,43 @@ public class Server {
             sc.readToCollection(yamlReader);
             yamlWriter = new YamlWriter(sc);
             scanner = new Scanner(System.in);
-            inputStream = new BufferedInputStream(System.in);
+
+
 
             while (isRunning) {
                 try {
-                    Request request = serverConnection.receiveDataFromClient();
+                    while (request == null){
+                        if (System.in.available() > 0) {
+                            String line = new Scanner(System.in).nextLine();
+                            if ("save".equals(line)) {
+                                yamlWriter.write(System.getenv("YamlFile"));
+                            }
+                            if ("exit".equals(line)) {
+                                MainServerApp.LOGGER.info("Завершение работы сервера");
+                                System.exit(0);
+                            }
+                        }
+                        request = serverConnection.receiveDataFromClient();
+                    }
                     MainServerApp.LOGGER.info("Пакет получен от клиента: "
                             + serverConnection.getDpack().getAddress().getHostName() + " " +
                             serverConnection.getDpack().getPort() + " c командой " + request.getCommandDTO().getCommandName());
-                    System.out.println();
                     ServerCommandProcessor scm = new ServerCommandProcessor();
                     response = scm.processCommand(request);
                     serverConnection.sendDataToClient(response);
                     MainServerApp.LOGGER.info("Отправлен ответ на команду "
                             + request.getCommandDTO().getCommandName() + " клиенту " + serverConnection.getDpack().getAddress().getHostName()
                             + " " + serverConnection.getDpack().getPort());
-
-                    if (inputStream.available() > 0) {
-                        if (scanner.nextLine().equals("save")){
-                            yamlWriter.write(System.getenv("YamlFile"));
-                        } continue;
-                    }
+                    request = null;
                     serverConnection.disconnect();
                 } catch (IOException ex) {
-                    MainServerApp.LOGGER.warning("Ошибка IO");
+                    MainServerApp.LOGGER.warning("ТАЙМАУТ");
                 } catch (ClassNotFoundException ex) {
                     MainServerApp.LOGGER.warning("Возникла проблема сериализации данных");
                 }
             }
         } catch (SocketException ex) {
-            MainServerApp.LOGGER.warning("Проблема соединения!");
+            MainServerApp.LOGGER.warning("Проблема соединения! Порт недоступен, поменяйте порт в переменной окружения");
         }
     }
 }

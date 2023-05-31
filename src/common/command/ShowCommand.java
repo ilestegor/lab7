@@ -9,11 +9,7 @@ import common.network.ResponseFactory;
 import common.utility.Printer;
 import server.model.MusicBand;
 
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Class contains implementation of show stuff.command

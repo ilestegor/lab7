@@ -14,6 +14,5 @@ public final class Serializer {
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(obj);
         return baos.toByteArray();
-
     }
 }

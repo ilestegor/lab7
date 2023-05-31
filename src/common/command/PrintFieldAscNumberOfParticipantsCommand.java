@@ -7,6 +7,8 @@ import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
 import common.utility.Printer;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import server.model.MusicBand;
 
 import java.util.*;
@@ -40,8 +42,12 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
         if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
             return new ResponseFactory().createResponse("Коллекция пуста");
         } else {
-            LinkedHashMap<String, Integer> bandNameAndParticipantsCount = getMusicBandCollectionManager().getMusicBandLinkedList().stream().collect(Collectors.toMap(MusicBand::getName, MusicBand::getNumberOfParticipants, (v1, v2) -> v2, LinkedHashMap::new)); //from list to linkedhashmap
-            List<Map.Entry<String, Integer>> newList = new ArrayList<>(bandNameAndParticipantsCount.entrySet());
+            MultiValuedMap<String, Integer> bandNameAndParticipantsCount = new ArrayListValuedHashMap<>();
+            for (MusicBand bands : getMusicBandCollectionManager().getMusicBandLinkedList()){
+                bandNameAndParticipantsCount.put(bands.getName(), bands.getNumberOfParticipants());
+            }
+            Collection<Map.Entry<String, Integer>> entries = bandNameAndParticipantsCount.entries();
+            List<Map.Entry<String, Integer>> newList = new ArrayList<>(entries);
             newList.sort(Comparator.comparingInt(Map.Entry::getValue));
             ArrayList<String> bandsForResponse = new ArrayList<>();
             for (Map.Entry<String, Integer> l : newList) {

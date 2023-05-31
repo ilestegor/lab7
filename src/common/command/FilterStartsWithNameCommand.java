@@ -25,7 +25,7 @@ public class FilterStartsWithNameCommand extends Command {
         if (checkArgument(getArgs()))
             return new RequestFactory().createRequest(getName(), getArgs());
         throw new WrongArgumentException("У команды filter_starts_with_name должен быть аргумент (подстрока, с которой начинается название музыкальной группы) \n" +
-                "IMPORTANT: Регистр подстроки важен! Если название начинается с большой буквы, а Вы ввели маленькую, или наоборот, то музыкальная группы найдена не будет");
+                "IMPORTANT: Регистр подстроки важен! Если название начинается с большой буквы, а Вы ввели маленькую или наоборот, то музыкальная группа найдена не будет");
     }
 
     public FilterStartsWithNameCommand() {
