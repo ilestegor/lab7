@@ -1,0 +1,12 @@
+- !!server.model.MusicBandClone
+  albumsCount: 5
+  coordinates:
+    x: 5
+    y: 5.0
+  creationDate: 2023-05-14T00:00
+  establishmentDate: 2021-12-01T21:00:00Z
+  genre: SOUL
+  id: 2569501
+  label: fds
+  name: fd
+  numberOfParticipants: 5
