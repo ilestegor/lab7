@@ -1,16 +1,16 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
+import server.manager.CreatorManager;
 import server.model.MusicBand;
 
 import java.time.LocalDate;
-import java.util.Random;
 
 /**
  * Class contains implementation of add stuff.command
@@ -20,16 +20,22 @@ import java.util.Random;
  */
 public class AddCommand extends Command {
 
+    private final RegistrationCode registrationCode;
+    private CreatorManager creatorManager;
 
-    public AddCommand(ServerCollectionManager serverCollectionManager) {
+    public AddCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode, CreatorManager creatorManager) {
         super("add", "Команда добавляет новый пользоватлеьский элемент в коллекцию", serverCollectionManager);
+        this.registrationCode = registrationCode;
+        this.creatorManager = creatorManager;
+
     }
 
-    public AddCommand() {
+    public AddCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs()))
             return new RequestFactory().createRequestMusicBand(getName(), getUserManager().requestDataForUserMusicBand());
         throw new WrongArgumentException();
@@ -38,10 +44,9 @@ public class AddCommand extends Command {
     @Override
     public Response execute(Request request) {
         if (checkMusicBandArgument(request.getRequestBodyMusicBand().getMusicBand())) {
-            Random random = new Random();
-            request.getRequestBodyMusicBand().getMusicBand().setId(random.nextLong(2, getMAX_ID()));
             request.getRequestBodyMusicBand().getMusicBand().setCreationDate(LocalDate.now().atStartOfDay());
-            if (getMusicBandCollectionManager().getMusicBandLinkedList().add(request.getRequestBodyMusicBand().getMusicBand())) {
+            request.getRequestBodyMusicBand().getMusicBand().setCreatorId(creatorManager.findUserByCredentials(request.getCredential()).getId());
+            if (getMusicBandCollectionManager().addMusicBandToDB(request.getRequestBodyMusicBand().getMusicBand())) {
                 return new ResponseFactory().createResponse("Объект успешео добавлен в коллекцию!");
             } else return new ResponseFactory().createResponse("Объект не добавлен в коллекцию! Попробуйте еще раз");
         }
@@ -56,5 +61,10 @@ public class AddCommand extends Command {
     @Override
     public boolean checkMusicBandArgument(MusicBand musicBand) {
         return super.checkMusicBandArgument(musicBand);
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

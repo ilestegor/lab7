@@ -1,12 +1,12 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
 import common.utility.SortByName;
 
 /**
@@ -16,15 +16,19 @@ import common.utility.SortByName;
  * @author ilestegor
  */
 public class SortCommand extends Command {
-    public SortCommand(ServerCollectionManager serverCollectionManager) {
+    private final RegistrationCode registrationCode;
+
+    public SortCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("save", "Команда сортирует коллекцию по названию музыкальной группы", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
-    public SortCommand() {
+    public SortCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs())) {
             return new RequestFactory().createRequest(getName(), getArgs());
         }
@@ -45,5 +49,10 @@ public class SortCommand extends Command {
     @Override
     public boolean checkArgument(String[] inputArgs) {
         return inputArgs.length == 0;
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

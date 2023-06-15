@@ -76,6 +76,24 @@ public class UserManager {
         return musicBandBuilder.buildId().buildName().buildCoordinates().buildCreationDate().buildNumberOfParticipants().buildAlbumsCount().buildEstablishmentDate().buildMusicGenre().buildLabel().build();
     }
 
+    public String requestLoginFromUser() {
+        String login = "";
+        do {
+            printer.printThisLine("Введите логин: ");
+            login = scanner.nextLine().trim().strip();
+        } while (login.isEmpty());
+        return login;
+    }
+
+    public String requestPasswordFromUser() {
+        String pwd = "";
+        do {
+            printer.printThisLine("Введите пароль: ");
+            pwd = scanner.nextLine().strip().trim();
+        } while (pwd.isEmpty());
+        return pwd;
+    }
+
     /**
      * Flag for indicating that program is running
      *

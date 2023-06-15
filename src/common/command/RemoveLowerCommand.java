@@ -1,15 +1,12 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
-import server.model.MusicBand;
-
-import java.util.Iterator;
 
 /**
  * Class contains implementation of remove_lower stuff.command
@@ -18,15 +15,19 @@ import java.util.Iterator;
  * @author ilestegor
  */
 public class RemoveLowerCommand extends Command {
-    public RemoveLowerCommand(ServerCollectionManager serverCollectionManager) {
+    private final RegistrationCode registrationCode;
+
+    public RemoveLowerCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("remove_lower", "Команда удаляет элементы меньше чем заданный (по количеству участников). IMPORTANT: аргумент должен быть id элемента", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
-    public RemoveLowerCommand() {
+    public RemoveLowerCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs())) {
             return new RequestFactory().createRequest(getName(), getArgs());
         }
@@ -40,25 +41,7 @@ public class RemoveLowerCommand extends Command {
         if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
             return new ResponseFactory().createResponse("Коллекция пуста!");
         } else {
-            if (getMusicBandCollectionManager().getMusicBandLinkedList().contains(getMusicBandCollectionManager().findModelById(receivedArg))) {
-                int targetNumber = 0;
-                for (MusicBand m : getMusicBandCollectionManager().getMusicBandLinkedList()) {
-                    if (m.getId() == receivedArg) {
-                        targetNumber = m.getNumberOfParticipants();
-                        break;
-                    }
-                }
-                Iterator<MusicBand> iterator = getMusicBandCollectionManager().getMusicBandLinkedList().iterator();
-                while (iterator.hasNext()) {
-                    MusicBand ms = iterator.next();
-                    if (targetNumber > ms.getNumberOfParticipants()) {
-                        iterator.remove();
-                    }
-                }
-                return new ResponseFactory().createResponse("Элементы меньшие чем указнный успешно удалены!");
-            } else {
-                return new ResponseFactory().createResponse("id c номером " + request.getRequestBody().getArgs()[0] + " нет в коллекции");
-            }
+            return getMusicBandCollectionManager().removeLower(request, receivedArg);
         }
     }
 
@@ -74,5 +57,10 @@ public class RemoveLowerCommand extends Command {
                 return false;
             }
         }
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

@@ -1,12 +1,12 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
 
 /**
  * Class contains implementation of filter_starts_with_name stuff.command
@@ -15,20 +15,23 @@ import common.utility.Printer;
  * @author ilestegor
  */
 public class FilterStartsWithNameCommand extends Command {
+    private final RegistrationCode registrationCode;
 
-    public FilterStartsWithNameCommand(ServerCollectionManager serverCollectionManager) {
+    public FilterStartsWithNameCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("filter_starts_with_name", "Команда выводит элементы, названия групп которых начинаются с заданной подстроки", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs()))
             return new RequestFactory().createRequest(getName(), getArgs());
         throw new WrongArgumentException("У команды filter_starts_with_name должен быть аргумент (подстрока, с которой начинается название музыкальной группы) \n" +
                 "IMPORTANT: Регистр подстроки важен! Если название начинается с большой буквы, а Вы ввели маленькую или наоборот, то музыкальная группа найдена не будет");
     }
 
-    public FilterStartsWithNameCommand() {
+    public FilterStartsWithNameCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
@@ -48,5 +51,10 @@ public class FilterStartsWithNameCommand extends Command {
     @Override
     public boolean checkArgument(String[] inputArgs) {
         return inputArgs.length != 0;
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

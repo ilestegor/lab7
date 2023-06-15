@@ -171,13 +171,15 @@ public class MusicBandBuilder implements IMusicBandBuilder, Serializable {
             try {
                 if (!estDateUserInput.isEmpty()) {
                     String[] estDateList = estDateUserInput.split("-");
-                    if (((Integer.parseInt(estDateList[YEAR_INDEX]) > MAX_YEAR) || (estDateList[YEAR_INDEX].length() < 4) || (Integer.parseInt(estDateList[YEAR_INDEX]) < ZERO_VALUE))
-                            || ((Integer.parseInt(estDateList[MONTH_INDEX]) > MAX_MONTH) || (Integer.parseInt(estDateList[MONTH_INDEX]) < ZERO_VALUE))
-                            || ((Integer.parseInt(estDateList[DAY_INDEX]) > MAX_DAY) || (Integer.parseInt(estDateList[DAY_INDEX]) < ZERO_VALUE))) {
-                        printer.printNextLine("Невалидная дата!");
-                    } else {
-                        estDate = estDateUserInput;
-                    }
+                    if (estDateList.length == 3) {
+                        if (((Integer.parseInt(estDateList[YEAR_INDEX]) > MAX_YEAR) || (estDateList[YEAR_INDEX].length() < 4) || (Integer.parseInt(estDateList[YEAR_INDEX]) < ZERO_VALUE))
+                                || ((Integer.parseInt(estDateList[MONTH_INDEX]) > MAX_MONTH) || (Integer.parseInt(estDateList[MONTH_INDEX]) < ZERO_VALUE))
+                                || ((Integer.parseInt(estDateList[DAY_INDEX]) > MAX_DAY) || (Integer.parseInt(estDateList[DAY_INDEX]) < ZERO_VALUE))) {
+                            printer.printNextLine("Невалидная дата!");
+                        } else {
+                            estDate = estDateUserInput;
+                        }
+                    } else printer.printNextLine("Невалидная дата!");
                 }
             } catch (NumberFormatException ex) {
                 printer.printNextLine("Невалидная дата!");

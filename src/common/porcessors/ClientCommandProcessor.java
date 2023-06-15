@@ -1,5 +1,6 @@
 package common.porcessors;
 
+import common.command.Command;
 import common.exception.CommandIsNotExecutedException;
 import common.exception.RecursionException;
 import common.exception.WrongArgumentException;
@@ -8,6 +9,7 @@ import common.network.Request;
 import common.utility.Printer;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ClientCommandProcessor {
     private final Printer printer = new Printer();
@@ -15,13 +17,14 @@ public class ClientCommandProcessor {
     private final int ARGUMENT_START_POSITION = 1;
 
 
-    public Request commandRequest(String[] inputData) {
+    public Request commandRequest(String[] inputData, Request request) {
         String command = inputData[COMMAND_NAME_POSITION];
         String[] args = Arrays.copyOfRange(inputData, ARGUMENT_START_POSITION, inputData.length);
-        CommandManager.getClientCommandMap().get(command).setName(command);
-        CommandManager.getClientCommandMap().get(command).setArgs(args);
+        HashMap<String, Command> commandHashMap = CommandManager.getCommandsByRegistration(CommandManager.getClientCommandMap(), request);
+        commandHashMap.get(command).setName(command);
+        commandHashMap.get(command).setArgs(args);
         try {
-            return CommandManager.getClientCommandMap().get(command).execute(new Printer());
+            return commandHashMap.get(command).execute();
         } catch (WrongArgumentException ex) {
             printer.printError(ex.getMessage());
         } catch (RecursionException ex) {
@@ -30,8 +33,8 @@ public class ClientCommandProcessor {
         throw new CommandIsNotExecutedException();
     }
 
-    public boolean commandChecker(String[] inputData) {
-        if (CommandManager.executeClient(inputData)) {
+    public boolean commandChecker(String[] inputData, Request request) {
+        if (CommandManager.executeClient(inputData, request)) {
             return true;
         } else {
             printer.printNextLine("Такой команды нет! Введите команду help для просмотра списка всех доступных команд");

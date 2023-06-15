@@ -1,11 +1,13 @@
 package common.command;
 
-import common.exception.CantBeSendException;
+import common.auth.RegistrationCode;
 import common.exception.RecursionException;
 import common.manager.ServerCollectionManager;
 import common.manager.UserManager;
 import common.network.Request;
+import common.network.RequestFactory;
 import common.network.Response;
+import common.network.ResponseFactory;
 import common.utility.Printer;
 
 import java.io.BufferedReader;
@@ -24,18 +26,22 @@ import java.util.LinkedList;
 public class ExecuteScriptCommand extends Command {
     private UserManager userManager;
     private final HashSet<File> filePaths = new HashSet<>();
+    private final Printer printer = new Printer();
+    private final RegistrationCode registrationCode;
 
-    public ExecuteScriptCommand(ServerCollectionManager serverCollectionManager) {
+    public ExecuteScriptCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("execute_script", "Команда выполняет скрипт записанный в файле. Принимате путь файла как аргумент.\n " +
                 "IMPORTANT: запись команд в файл скрипта идет в столбик сразу с необходимыми аргуменатми для команд", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
-    public ExecuteScriptCommand(UserManager userManager) {
+    public ExecuteScriptCommand(UserManager userManager, RegistrationCode registrationCode) {
         this.userManager = userManager;
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs())) {
             String path = getArgs()[0];
             File scriptFile = new File(path).getAbsoluteFile();
@@ -64,12 +70,12 @@ public class ExecuteScriptCommand extends Command {
                 throw new RecursionException("\nСкрипт вызывает сам себя! Выход из скрипта");
             }
         }
-        return null;
+        return new RequestFactory().createRequest(getName(), getArgs());
     }
 
     @Override
     public Response execute(Request request) {
-        throw new CantBeSendException("Команда не отправляет ответа!");
+        return new ResponseFactory().createResponse("Выполняется скрипт");
     }
 
     @Override
@@ -80,5 +86,10 @@ public class ExecuteScriptCommand extends Command {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

@@ -1,7 +1,6 @@
 package common.interfaces;
 
 import common.network.Request;
-import common.utility.Printer;
 
 /**
  * Contains methods for stuff.command execution and argument checking
@@ -14,7 +13,7 @@ public interface CommandInterface {
      *
      * @return
      */
-    Request execute(Printer printer);
+    Request execute();
 
     /**
      * Validate arguments

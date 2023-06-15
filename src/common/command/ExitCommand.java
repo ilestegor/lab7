@@ -1,5 +1,6 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.manager.UserManager;
@@ -7,7 +8,6 @@ import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
 
 /**
  * Class contains implementation of exit stuff.command
@@ -17,16 +17,19 @@ import common.utility.Printer;
  */
 public class ExitCommand extends Command {
 
+    private final RegistrationCode registrationCode;
 
-    public ExitCommand(ServerCollectionManager serverCollectionManager) {
+    public ExitCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("exit", "Команда завершает программу без сохранения результата в файл", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
-    public ExitCommand() {
+    public ExitCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs())) {
             UserManager.setIsInWork(false);
             return new RequestFactory().createRequest(getName(), getArgs());
@@ -36,8 +39,6 @@ public class ExitCommand extends Command {
 
     @Override
     public Response execute(Request request) {
-//            команда сохранения коллекции
-
         return new ResponseFactory().createResponse("Завершение работы!");
     }
 
@@ -46,4 +47,8 @@ public class ExitCommand extends Command {
         return inputArgs.length == 0;
     }
 
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
+    }
 }

@@ -1,13 +1,13 @@
 package common.command;
 
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
 
 /**
  * Class contains implementation of count_by_number_of_participants stuff.command
@@ -17,19 +17,22 @@ import common.utility.Printer;
  */
 public class CountByNumberOfParticipantsCommand extends Command {
 
+    private final RegistrationCode registrationCode;
 
-    public CountByNumberOfParticipantsCommand(ServerCollectionManager serverCollectionManager) {
+    public CountByNumberOfParticipantsCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("count_by_number_of_participants", "Команда выводит количество элементов, значение поля numberOfParticipants которых равно заданному", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs()))
             return new RequestFactory().createRequest(getName(), getArgs());
         throw new WrongArgumentException("У команды count_by_number_of_participants должен быть аргумент > 0 типа (int)");
     }
 
-    public CountByNumberOfParticipantsCommand() {
+    public CountByNumberOfParticipantsCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
@@ -50,7 +53,6 @@ public class CountByNumberOfParticipantsCommand extends Command {
     @Override
     public boolean checkArgument(String[] inputArgs) {
         if (inputArgs.length == 0) {
-            System.out.println();
             return false;
         } else {
             try {
@@ -60,5 +62,10 @@ public class CountByNumberOfParticipantsCommand extends Command {
                 return false;
             }
         }
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

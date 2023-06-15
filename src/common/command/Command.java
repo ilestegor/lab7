@@ -1,11 +1,11 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.interfaces.CommandInterface;
 import common.manager.ServerCollectionManager;
 import common.manager.UserManager;
 import common.network.Request;
 import common.network.Response;
-import common.utility.Printer;
 import server.model.MusicBand;
 
 /**
@@ -22,6 +22,7 @@ public abstract class Command implements CommandInterface {
     private ServerCollectionManager serverCollectionManager;
     private final int MAX_ID = 10000000;
     private final UserManager userManager = new UserManager();
+    private RegistrationCode registrationCode;
 
     /**
      * Constructor for Command abstract class
@@ -41,7 +42,7 @@ public abstract class Command implements CommandInterface {
 
     public abstract Response execute(Request request);
 
-    public abstract Request execute(Printer printer);
+    public abstract Request execute();
 
 
     @Override
@@ -100,5 +101,9 @@ public abstract class Command implements CommandInterface {
 
     public UserManager getUserManager() {
         return userManager;
+    }
+
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

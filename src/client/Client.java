@@ -1,6 +1,8 @@
 package client;
 
 import client.network.ClientConnection;
+import common.auth.Credential;
+import common.auth.RegistrationCode;
 import common.exception.CommandIsNotExecutedException;
 import common.manager.CommandManager;
 import common.manager.ServerCollectionManager;
@@ -22,6 +24,8 @@ public class Client {
     UserManager userManager;
     CommandManager manager;
     ClientCommandProcessor cmp;
+    Credential credentials;
+    Request request;
 
     public void run() {
         Printer printer = new Printer();
@@ -31,27 +35,43 @@ public class Client {
             userManager = new UserManager();
             printer.printNextLine("---------- " + LocalDateTime.now().toString().substring(0, 10) + " ---------");
             printer.printNextLine("Приложение запущено!");
-            printer.printNextLine("Чтобы ознакомиться c командами, введите команду help");
+            printer.printNextLine("Введите команду register для регистрации или команду login для входа в аккаунт");
 
 
             manager = new CommandManager(new ServerCollectionManager(), userManager);
             cmp = new ClientCommandProcessor();
+            request = new Request();
+            request.setRegistrationCode(RegistrationCode.NOT_REGISTERED);
             while (userManager.isIsInWork()) {
                 userManager.requestCommand();
                 while (userManager.getInputCommand().size() != 0) {
                     String[] str = userManager.requestPlainCommand(Objects.requireNonNull(userManager.getInputCommand().poll()));
-                    if (cmp.commandChecker(str)) {
+                    if (cmp.commandChecker(str, request)) {
                         try {
-                            Request l = cmp.commandRequest(str);
-                            if (l == null) {
+                            Request tempRequest = cmp.commandRequest(str, request);
+                            request.setCommandDTO(tempRequest.getCommandDTO());
+                            request.setRequestBody(tempRequest.getRequestBody());
+                            request.setRequestBodyMusicBand(tempRequest.getRequestBodyMusicBand());
+                            request.setCredential(tempRequest.getCredential());
+                            if (request == null) {
                                 continue;
                             }
-                            clientConnection.sendCommand(l);
+                            if (request.getCredential() == null) {
+                                request.setCredential(this.credentials);
+                            } else {
+                                this.credentials = request.getCredential();
+                            }
+                            clientConnection.sendCommand(request);
                             ResponseFactory responseFactory = new ResponseFactory();
                             Response response = clientConnection.receiveResult();
                             responseFactory.createResponse(response.getMessage());
                             System.out.println("\n" + response.getMessage() + "\n");
-
+                            if (response.getRegistrationCode().equals(RegistrationCode.REGISTERED)) {
+                                request.setRegistrationCode(RegistrationCode.REGISTERED);
+                            } else {
+                                credentials = null;
+                                request.setRegistrationCode(RegistrationCode.NOT_REGISTERED);
+                            }
                         } catch (CommandIsNotExecutedException ex) {
                             printer.printError(ex.getMessage());
                         } catch (PortUnreachableException ex) {
@@ -70,6 +90,5 @@ public class Client {
         } catch (ClassNotFoundException ex) {
             printer.printError("Ошибка сериализация данных");
         }
-
     }
 }

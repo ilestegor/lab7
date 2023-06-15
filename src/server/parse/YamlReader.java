@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
  *
  * @author ilestegor
  */
+@Deprecated
 public class YamlReader implements BaseReader {
     MusicBand[] musicBands;
     private final Printer printer;

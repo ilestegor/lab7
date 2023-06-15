@@ -1,12 +1,12 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
 
 /**
  * Class contains implementation of remove_by_id stuff.command
@@ -15,13 +15,15 @@ import common.utility.Printer;
  * @author ilestegor
  */
 public class RemoveByIdCommand extends Command {
+    private final RegistrationCode registrationCode;
 
-    public RemoveByIdCommand(ServerCollectionManager serverCollectionManager) {
+    public RemoveByIdCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("remove_by_id", "Команда удаляет элемент коллекции в соответсвии с его id", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs())) {
             return new RequestFactory().createRequest(getName(), getArgs());
         }
@@ -29,7 +31,8 @@ public class RemoveByIdCommand extends Command {
 
     }
 
-    public RemoveByIdCommand() {
+    public RemoveByIdCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class RemoveByIdCommand extends Command {
             return new ResponseFactory().createResponse("Коллекция пуста!");
         } else {
             int id = Integer.parseInt(getArgs()[0]);
-            return getMusicBandCollectionManager().removeFromCollection(getMusicBandCollectionManager().findModelById(id));
+            return getMusicBandCollectionManager().removeFromCollection(request, id);
 
         }
     }
@@ -55,6 +58,11 @@ public class RemoveByIdCommand extends Command {
                 return false;
             }
         }
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 
 }

@@ -20,4 +20,8 @@ public class RequestFactory implements Serializable {
     public Request createRequestMusicBandWithArgs(String nameOfCommand, String[] args, MusicBand musicBand) {
         return new Request(new CommandDTO(nameOfCommand), RequestBodyFactory.createRequestBody(args), RequestBodyFactory.createRequestBodyMusicBand(musicBand));
     }
+
+    public Request createRequestWithNoArgs(String nameOfCommand) {
+        return new Request(new CommandDTO(nameOfCommand));
+    }
 }

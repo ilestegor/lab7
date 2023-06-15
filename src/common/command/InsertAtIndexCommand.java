@@ -1,12 +1,12 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -18,15 +18,19 @@ import java.util.Random;
  * @author ilestegor
  */
 public class InsertAtIndexCommand extends Command {
-    public InsertAtIndexCommand(ServerCollectionManager serverCollectionManager) {
+    private final RegistrationCode registrationCode;
+
+    public InsertAtIndexCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("insert_at", "Команда вставляет новый элемент в позицию, равную заданной", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
-    public InsertAtIndexCommand() {
+    public InsertAtIndexCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs())) {
             return new RequestFactory().createRequestMusicBandWithArgs(getName(), getArgs(), getUserManager().requestDataForUserMusicBand());
         }
@@ -60,5 +64,10 @@ public class InsertAtIndexCommand extends Command {
                 return false;
             }
         }
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

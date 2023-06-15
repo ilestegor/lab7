@@ -8,6 +8,7 @@ import server.model.MusicBandClone;
  *
  * @author ilestegor
  */
+@Deprecated
 public class CloneParser {
     /**
      * Parsing MusicGenre object to its clone

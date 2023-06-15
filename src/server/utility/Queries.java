@@ -1,0 +1,40 @@
+package server.utility;
+
+public enum Queries {
+    CREATE_USER("insert into creator (login, password, salt) values (?, ?, ?) returning id;"),
+
+
+    DELETE_USER("deleteAll from creator where id = ?"),
+    READ_USER("select * from creator"),
+    GET_SALT("select salt from creator where login = ?"),
+    CREATE_MUSICBAND("insert into musicband " +
+            "(name, coordinates, creation_date, number_of_participants, albums_count, establishment_date, genre, label, creator_id)" +
+            "values (?, ?, ?, ?, ?, ?, cast(? as music_genre), ?, ?) returning id;"),
+    CREATE_MUSICBAND_COORDINATES("insert into coordinates (x, y, creator_id) values (?, ?, ?) returning id;"),
+    CREATE_MUSICBAND_LABEL("insert into label (name, creator_id) values (?, ?) returning id;"),
+    READ_MUSICBAND("select * from musicband"),
+    READ_COORDINATES_BY_MUSICBAND_ID("select x, y from coordinates join musicband m on coordinates.id = m.coordinates where  m.id = ?"),
+    READ_LABEL_BY_ID("select label.name from label join musicband m on label.id = m.label where label.id = ?"),
+    DELETE_MUSICBAND("delete from musicband where creator_id = ?"),
+    DELETE_LABEL("delete from label where creator_id = ?"),
+    DELETE_COORDINATES("delete from coordinates where creator_id = ?"),
+    DELETE_MUSICBAND_BY_ID("delete from musicband where id = ? and creator_id = ?"),
+    FIND_COORDINATES_BY_MUSICBAND_ID("select musicband.coordinates from musicband where id = ? and creator_id = ?"),
+    FIND_LABEL_BY_ID("select musicband.label from musicband where id = ? and creator_id = ?"),
+    DELETE_LABEL_BY_ID("delete from label where id = ? and creator_id = ?"),
+    DELETE_COORDINATES_BY_ID("delete from coordinates where id = ? and creator_id = ?"),
+    UPDATE_USER("update creator set login = ?, password = ? where id = ?"),
+    UPDATE_MUSICBAND("update musicband set name = ?, number_of_participants = ?, albums_count = ?, establishment_date = ?, genre = cast(? as music_genre) where id = ? and creator_id = ?"),
+    UPDATE_COORDINATES("update coordinates set x = ?, y = ? where id = ? and creator_id = ?"),
+    UPDATE_LABEL("update label set name = ? where id = ? and creator_id = ?");
+
+    private final String query;
+
+    Queries(String query) {
+        this.query = query;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+}

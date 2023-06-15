@@ -16,6 +16,7 @@ public class Coordinates implements Serializable {
     private static final long serialVersionUID = 9215677719801477893L;
     private Long x;
     private float y;
+    private int coordinatesId;
     private final ModelValidator modelValidator = new ModelValidator();
 
     public Coordinates() {
@@ -26,6 +27,11 @@ public class Coordinates implements Serializable {
         this.y = y;
     }
 
+    public Coordinates(Long x, float y, int coordinatesId) {
+        this.x = x;
+        this.y = y;
+        this.coordinatesId = coordinatesId;
+    }
 
     public void setX(Long x) {
         if (modelValidator.validateCoordinateX(x)) {

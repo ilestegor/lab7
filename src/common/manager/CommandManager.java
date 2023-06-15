@@ -1,10 +1,13 @@
 package common.manager;
 
+import common.auth.RegistrationCode;
 import common.command.*;
 import common.network.Request;
-import common.utility.Printer;
+import server.manager.CreatorManager;
+import server.manager.DBUserManager;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Contains methods for storing, getting stuff.command instances
@@ -15,52 +18,66 @@ public class CommandManager {
     private static HashMap<String, Command> clientCommandMap;
     private static HashMap<String, Command> serverCommandMap;
     private final ServerCollectionManager serverCollectionManager;
-    private static final Printer printer = new Printer();
+    private DBUserManager dbUserManager;
+    private CreatorManager creatorManager;
     private static final int COMMAND_NAME_POSITION = 0;
 
 
+    public CommandManager(ServerCollectionManager serverCollectionManager, DBUserManager dbUserManager, CreatorManager creatorManager) {
+        this.dbUserManager = dbUserManager;
+        this.serverCollectionManager = serverCollectionManager;
+        this.creatorManager = creatorManager;
+        initServerCommands();
+    }
+
     public CommandManager(ServerCollectionManager serverCollectionManager, UserManager userManager) {
         this.serverCollectionManager = serverCollectionManager;
-        initServerCommands();
         initClientCommands(userManager);
     }
 
+
     private void initServerCommands() {
         serverCommandMap = new HashMap<>();
-        serverCommandMap.put("help", new HelpCommand(serverCollectionManager));
-        serverCommandMap.put("info", new InfoCommand(serverCollectionManager));
-        serverCommandMap.put("exit", new ExitCommand(serverCollectionManager));
-        serverCommandMap.put("show", new ShowCommand(serverCollectionManager));
-        serverCommandMap.put("clear", new ClearCommand(serverCollectionManager));
-        serverCommandMap.put("sort", new SortCommand(serverCollectionManager));
-        serverCommandMap.put("print_ascending_number_of_participants", new PrintFieldAscNumberOfParticipantsCommand(serverCollectionManager));
-        serverCommandMap.put("remove_by_id", new RemoveByIdCommand(serverCollectionManager));
-        serverCommandMap.put("count_by_number_of_participants", new CountByNumberOfParticipantsCommand(serverCollectionManager));
-        serverCommandMap.put("filter_starts_with_name", new FilterStartsWithNameCommand(serverCollectionManager));
-        serverCommandMap.put("remove_lower", new RemoveLowerCommand(serverCollectionManager));
-        serverCommandMap.put("add", new AddCommand(serverCollectionManager));
-        serverCommandMap.put("insert_at", new InsertAtIndexCommand(serverCollectionManager));
-        serverCommandMap.put("update", new UpdateIdCommand(serverCollectionManager));
-        serverCommandMap.put("execute_script", new ExecuteScriptCommand(serverCollectionManager));
+        serverCommandMap.put("logout", new LogOutCommand(serverCollectionManager, dbUserManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("login", new LoginCommand(serverCollectionManager, dbUserManager, RegistrationCode.NOT_REGISTERED));
+        serverCommandMap.put("register", new RegisterCommand(serverCollectionManager, dbUserManager, RegistrationCode.NOT_REGISTERED));
+        serverCommandMap.put("help", new HelpCommand(serverCollectionManager, RegistrationCode.FOR_BOTH));
+        serverCommandMap.put("info", new InfoCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("exit", new ExitCommand(serverCollectionManager, RegistrationCode.FOR_BOTH));
+        serverCommandMap.put("show", new ShowCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("clear", new ClearCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("sort", new SortCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("print_ascending_number_of_participants", new PrintFieldAscNumberOfParticipantsCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("remove_by_id", new RemoveByIdCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("count_by_number_of_participants", new CountByNumberOfParticipantsCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("filter_starts_with_name", new FilterStartsWithNameCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("remove_lower", new RemoveLowerCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("add", new AddCommand(serverCollectionManager, RegistrationCode.REGISTERED, creatorManager));
+        serverCommandMap.put("insert_at", new InsertAtIndexCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("update", new UpdateIdCommand(serverCollectionManager, RegistrationCode.REGISTERED));
+        serverCommandMap.put("execute_script", new ExecuteScriptCommand(serverCollectionManager, RegistrationCode.REGISTERED));
     }
 
     private void initClientCommands(UserManager um) {
         clientCommandMap = new HashMap<>();
-        clientCommandMap.put("info", new InfoCommand());
-        clientCommandMap.put("help", new HelpCommand());
-        clientCommandMap.put("exit", new ExitCommand());
-        clientCommandMap.put("clear", new ClearCommand());
-        clientCommandMap.put("show", new ShowCommand());
-        clientCommandMap.put("print_ascending_number_of_participants", new PrintFieldAscNumberOfParticipantsCommand());
-        clientCommandMap.put("sort", new SortCommand());
-        clientCommandMap.put("remove_by_id", new RemoveByIdCommand());
-        clientCommandMap.put("count_by_number_of_participants", new CountByNumberOfParticipantsCommand());
-        clientCommandMap.put("filter_starts_with_name", new FilterStartsWithNameCommand());
-        clientCommandMap.put("remove_lower", new RemoveLowerCommand());
-        clientCommandMap.put("add", new AddCommand());
-        clientCommandMap.put("insert_at", new InsertAtIndexCommand());
-        clientCommandMap.put("update", new UpdateIdCommand());
-        clientCommandMap.put("execute_script", new ExecuteScriptCommand(um));
+        clientCommandMap.put("register", new RegisterCommand(RegistrationCode.NOT_REGISTERED));
+        clientCommandMap.put("logout", new LogOutCommand(serverCollectionManager, dbUserManager, RegistrationCode.REGISTERED));
+        clientCommandMap.put("login", new LoginCommand(RegistrationCode.NOT_REGISTERED));
+        clientCommandMap.put("info", new InfoCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("help", new HelpCommand(RegistrationCode.FOR_BOTH));
+        clientCommandMap.put("exit", new ExitCommand(RegistrationCode.FOR_BOTH));
+        clientCommandMap.put("clear", new ClearCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("show", new ShowCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("print_ascending_number_of_participants", new PrintFieldAscNumberOfParticipantsCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("sort", new SortCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("remove_by_id", new RemoveByIdCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("count_by_number_of_participants", new CountByNumberOfParticipantsCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("filter_starts_with_name", new FilterStartsWithNameCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("remove_lower", new RemoveLowerCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("add", new AddCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("insert_at", new InsertAtIndexCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("update", new UpdateIdCommand(RegistrationCode.REGISTERED));
+        clientCommandMap.put("execute_script", new ExecuteScriptCommand(um, RegistrationCode.REGISTERED));
     }
 
     /**
@@ -76,16 +93,32 @@ public class CommandManager {
         return serverCommandMap;
     }
 
-    public static boolean executeClient(String[] inputData) {
+    //return commands depending on their registration code
+    public static HashMap<String, Command> getCommandsByRegistration(HashMap<String, Command> commandHashMap, Request request) {
+        HashMap<String, Command> result = new HashMap<>();
+        for (Map.Entry<String, Command> x : commandHashMap.entrySet()) {
+            if (x.getValue().getRegistrationCode().equals(request.getRegistrationCode()) || x.getValue().getRegistrationCode().equals(RegistrationCode.FOR_BOTH)) {
+                result.put(x.getKey(), x.getValue());
+            }
+        }
+        return result;
+    }
+
+
+    public static boolean executeClient(String[] inputData, Request request) {
         if (inputData.length == 0) {
             return false;
         } else {
             String command = inputData[COMMAND_NAME_POSITION];
-            return clientCommandMap.containsKey(command);
+            HashMap<String, Command> cmd = getCommandsByRegistration(clientCommandMap, request);
+            return cmd.containsKey(command);
         }
     }
 
-    public static boolean executeServer(Request request) {
-        return serverCommandMap.containsKey(request.getCommandDTO().getCommandName());
+    //checks if commands in map depending on its registration code
+    public static boolean executeServer(Request request, CommandManager commandManager) {
+        HashMap<String, Command> cmd = getCommandsByRegistration(serverCommandMap, request);
+        return cmd.containsKey(request.getCommandDTO().getCommandName());
     }
+
 }

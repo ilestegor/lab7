@@ -15,9 +15,18 @@ public class Label implements Serializable {
     private static final long serialVersionUID = -5052629777520452248L;
     private String label;
     private final ModelValidator modelValidator = new ModelValidator();
+    private int labelId;
 
     public Label(String label) {
         this.label = label;
+    }
+
+    public Label(String label, int labelId) {
+        this.label = label;
+        this.labelId = labelId;
+    }
+
+    public Label() {
     }
 
     public void setLabel(String label) {

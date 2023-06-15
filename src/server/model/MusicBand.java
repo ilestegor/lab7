@@ -3,7 +3,6 @@ package server.model;
 import common.exception.FiledIsNotCorrectException;
 import common.validators.ModelValidator;
 
-import java.io.NotSerializableException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -28,6 +27,7 @@ public class MusicBand implements Serializable {
     private MusicGenre genre; //field can't be null
     private Label label; //filed can be null
     private final ModelValidator modelValidator = new ModelValidator();
+    private int creatorId;
 
     public MusicBand() {
     }
@@ -45,6 +45,21 @@ public class MusicBand implements Serializable {
         this.setEstablishmentDate(establishmentDate);
         this.setGenre(genre);
         this.setLabel(label);
+    }
+
+    public MusicBand(long id, String name, Coordinates coordinates, LocalDateTime creationDate,
+                     Integer numberOfParticipants, int albumsCount, Date establishmentDate,
+                     MusicGenre genre, Label label, int creatorId) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.creationDate = creationDate;
+        this.numberOfParticipants = numberOfParticipants;
+        this.albumsCount = albumsCount;
+        this.establishmentDate = establishmentDate;
+        this.genre = genre;
+        this.label = label;
+        this.creatorId = creatorId;
     }
 
     public void setName(String name) {
@@ -101,6 +116,9 @@ public class MusicBand implements Serializable {
         } else throw new FiledIsNotCorrectException();
     }
 
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
+    }
 
     public long getId() {
         return id;
@@ -136,6 +154,10 @@ public class MusicBand implements Serializable {
 
     public Label getLabel() {
         return label;
+    }
+
+    public int getCreatorId() {
+        return creatorId;
     }
 
     /**

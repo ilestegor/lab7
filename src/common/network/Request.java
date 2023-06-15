@@ -1,18 +1,28 @@
 package common.network;
 
+
+import common.auth.Credential;
+import common.auth.RegistrationCode;
+
 import java.io.Serial;
 import java.io.Serializable;
 
 public class Request implements Serializable {
     @Serial
     private static final long serialVersionUID = -9137511527076368943L;
-    private final CommandDTO commandDTO;
+    private CommandDTO commandDTO;
     private RequestBody requestBody;
     private RequestBodyMusicBand requestBodyMusicBand;
+    private Credential credential;
+    private RegistrationCode registrationCode;
 
     public Request(CommandDTO commandDTO, RequestBody requestBody) {
         this.commandDTO = commandDTO;
         this.requestBody = requestBody;
+    }
+
+    public Request(CommandDTO commandDTO) {
+        this.commandDTO = commandDTO;
     }
 
     public Request(CommandDTO commandDTO, RequestBodyMusicBand requestBodyMusicBand) {
@@ -26,6 +36,9 @@ public class Request implements Serializable {
         this.requestBodyMusicBand = requestBodyMusicBand;
     }
 
+    public Request() {
+    }
+
     public CommandDTO getCommandDTO() {
         return commandDTO;
     }
@@ -36,5 +49,33 @@ public class Request implements Serializable {
 
     public RequestBodyMusicBand getRequestBodyMusicBand() {
         return requestBodyMusicBand;
+    }
+
+    public Credential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(Credential credential) {
+        this.credential = credential;
+    }
+
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
+    }
+
+    public void setRegistrationCode(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
+    }
+
+    public void setRequestBody(RequestBody requestBody) {
+        this.requestBody = requestBody;
+    }
+
+    public void setRequestBodyMusicBand(RequestBodyMusicBand requestBodyMusicBand) {
+        this.requestBodyMusicBand = requestBodyMusicBand;
+    }
+
+    public void setCommandDTO(CommandDTO commandDTO) {
+        this.commandDTO = commandDTO;
     }
 }

@@ -25,7 +25,7 @@ public class MainServerApp {
         try {
             FileInputStream fis = new FileInputStream(srcFile.getAbsoluteFile());
             LogManager.getLogManager().readConfiguration(fis);
-            LOGGER = Logger.getLogger(MainServerApp.class.getSimpleName());
+        LOGGER = Logger.getLogger(MainServerApp.class.getSimpleName());
         } catch (FileNotFoundException ex) {
             printer.printError("Файл для логирования не найден");
         } catch (IOException ex) {

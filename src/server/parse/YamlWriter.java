@@ -17,6 +17,7 @@ import java.io.OutputStreamWriter;
  *
  * @author ilestegor
  */
+@Deprecated
 public class YamlWriter implements BaseWriter {
     private final ServerCollectionManager serverCollectionManager;
 

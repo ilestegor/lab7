@@ -2,9 +2,10 @@ package server.network;
 
 import common.interfaces.Connection;
 import common.interfaces.PackageSeparator;
-import common.network.Request;
 import common.network.Response;
 import common.utility.Serializer;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.net.*;
@@ -12,39 +13,30 @@ import java.util.ArrayList;
 
 public class ServerConnection implements Connection, PackageSeparator {
     private final DatagramSocket socket;
-    private DatagramPacket dpack;
     private final int BUFFER = 2048;
-    private final byte[] buffer;
-
 
 
     public ServerConnection(int port) throws SocketException {
         this.socket = new DatagramSocket(port);
         socket.setReuseAddress(true);
-        this.buffer = new byte[BUFFER];
     }
 
-    public Request receiveDataFromClient() throws IOException, ClassNotFoundException {
+
+    public Pair<DatagramPacket, byte[]> receiveDataFromClient() throws IOException, ClassNotFoundException {
+        byte[] buffer = new byte[BUFFER];
         ArrayList<byte[]> arrayListOfReceivedBytes = new ArrayList<>();
-        dpack = new DatagramPacket(buffer, BUFFER - 1);
-        socket.setSoTimeout(2_000);
-        try {
-            socket.receive(dpack);
-            connect(dpack.getAddress(), dpack.getPort());
-            arrayListOfReceivedBytes.add(buffer);
-            byte[] data = merge(arrayListOfReceivedBytes);
-            return (Request) Serializer.deserialize(data);
-        } catch (SocketTimeoutException ex){
-            disconnect();
-        }
-        return null;
+        DatagramPacket dpack = new DatagramPacket(buffer, BUFFER - 1);
+        socket.receive(dpack);
+        arrayListOfReceivedBytes.add(buffer);
+        byte[] data = merge(arrayListOfReceivedBytes);
+        return new ImmutablePair<>(dpack, data);
     }
 
-    public void sendDataToClient(Response response) throws IOException {
+    public void sendDataToClient(Response response, SocketAddress addr) throws IOException {
         byte[] toSend = Serializer.serialize(response);
         byte[][] packets = split(toSend);
         for (byte[] toSendBytes : packets) {
-            dpack = new DatagramPacket(toSendBytes, toSendBytes.length, dpack.getAddress(), dpack.getPort());
+            DatagramPacket dpack = new DatagramPacket(toSendBytes, toSendBytes.length, addr);
             socket.send(dpack);
         }
 
@@ -62,7 +54,4 @@ public class ServerConnection implements Connection, PackageSeparator {
         socket.disconnect();
     }
 
-    public DatagramPacket getDpack() {
-        return dpack;
-    }
 }

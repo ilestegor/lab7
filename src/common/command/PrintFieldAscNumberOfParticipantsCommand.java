@@ -1,18 +1,17 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
-import common.utility.Printer;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import server.model.MusicBand;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Class contains implementation of print_filed_ascending_number_of_participants
@@ -20,16 +19,20 @@ import java.util.stream.Collectors;
  * @author ilestegor
  */
 public class PrintFieldAscNumberOfParticipantsCommand extends Command {
+    private final RegistrationCode registrationCode;
 
-    public PrintFieldAscNumberOfParticipantsCommand(ServerCollectionManager serverCollectionManager) {
+    public PrintFieldAscNumberOfParticipantsCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("print_ascending_number_of_participants", "Команда выводит колиечство участников всех групп в порядке возрастания", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
-    public PrintFieldAscNumberOfParticipantsCommand() {
+
+    public PrintFieldAscNumberOfParticipantsCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs())) {
             return new RequestFactory().createRequest(getName(), getArgs());
         }
@@ -43,7 +46,7 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
             return new ResponseFactory().createResponse("Коллекция пуста");
         } else {
             MultiValuedMap<String, Integer> bandNameAndParticipantsCount = new ArrayListValuedHashMap<>();
-            for (MusicBand bands : getMusicBandCollectionManager().getMusicBandLinkedList()){
+            for (MusicBand bands : getMusicBandCollectionManager().getMusicBandLinkedList()) {
                 bandNameAndParticipantsCount.put(bands.getName(), bands.getNumberOfParticipants());
             }
             Collection<Map.Entry<String, Integer>> entries = bandNameAndParticipantsCount.entries();
@@ -61,5 +64,10 @@ public class PrintFieldAscNumberOfParticipantsCommand extends Command {
     @Override
     public boolean checkArgument(String[] inputArgs) {
         return inputArgs.length == 0;
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }

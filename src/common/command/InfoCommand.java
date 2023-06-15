@@ -1,11 +1,11 @@
 package common.command;
 
+import common.auth.RegistrationCode;
 import common.exception.WrongArgumentException;
 import common.manager.ServerCollectionManager;
 import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
-import common.utility.Printer;
 
 /**
  * Class contains implementation of info stuff.command
@@ -14,16 +14,19 @@ import common.utility.Printer;
  * @author ilestegor
  */
 public class InfoCommand extends Command {
+    private final RegistrationCode registrationCode;
 
-    public InfoCommand(ServerCollectionManager serverCollectionManager) {
+    public InfoCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("info", "Команда выводит основную информацию о коллекции: тип, дата инициализации, количество элементов", serverCollectionManager);
+        this.registrationCode = registrationCode;
     }
 
-    public InfoCommand() {
+    public InfoCommand(RegistrationCode registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     @Override
-    public Request execute(Printer printer) {
+    public Request execute() {
         if (checkArgument(getArgs()))
             return new RequestFactory().createRequest(getName(), getArgs());
         throw new WrongArgumentException("Команда info не имеет аргументов, попробуйте ввести команду без аргументов!");
@@ -40,5 +43,10 @@ public class InfoCommand extends Command {
     @Override
     public boolean checkArgument(String[] inputArgs) {
         return inputArgs.length == 0;
+    }
+
+    @Override
+    public RegistrationCode getRegistrationCode() {
+        return registrationCode;
     }
 }
