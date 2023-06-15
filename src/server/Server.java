@@ -70,11 +70,9 @@ public class Server {
                 if (requestPair.getRight().length != 0) {
                     cachedThreadPool.submit(() -> {
                         listOfRequests.add(requestPair);
-                        System.out.println(Thread.currentThread());
                         forkJoinPool.invoke(new RecursiveAction() {
                             @Override
                             protected void compute() {
-                                System.out.println(Thread.currentThread());
                                 Response response = new Response();
                                 Pair<DatagramPacket, byte[]> requestFormList = listOfRequests.getLast();
                                 InetAddress address = requestFormList.getLeft().getAddress();
