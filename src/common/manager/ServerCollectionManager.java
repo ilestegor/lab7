@@ -51,7 +51,7 @@ public class ServerCollectionManager {
      *
      * @param musicBand
      */
-    public boolean validateAndAddToCollection(MusicBand musicBand) {
+    public synchronized boolean validateAndAddToCollection(MusicBand musicBand) {
         if (idContainer.contains(musicBand.getId())) {
             musicBandLinkedList.remove(musicBand);
             printer.printNextLine("Объект с id" + musicBand.getId() + " уже существует! Объект не добавлен в коллекцию");
@@ -99,7 +99,7 @@ public class ServerCollectionManager {
 
     }
 
-    public boolean addMusicBandToDB(MusicBand musicBand) {
+    public synchronized boolean addMusicBandToDB(MusicBand musicBand) {
         int id = musicBandDao.create(musicBand);
         if (id != MusicBandDaoImpl.ERROR) {
             musicBand.setId(id);
@@ -117,10 +117,12 @@ public class ServerCollectionManager {
         User user = creatorManager.findUserByCredentials(request.getCredential());
         Optional<MusicBand> musicBand = musicBandLinkedList.stream().filter(x -> x.getCreatorId() == user.getId()).findFirst();
         if (musicBand.isPresent()) {
-            if (musicBandDao.deleteAll(musicBand.get()) != DAO.ERROR) {
-                musicBandLinkedList.removeIf(m -> m.getCreatorId() == musicBand.get().getCreatorId());
+            synchronized (this) {
+                if (musicBandDao.deleteAll(musicBand.get()) != DAO.ERROR) {
+                    musicBandLinkedList.removeIf(m -> m.getCreatorId() == musicBand.get().getCreatorId());
+                }
+                return new ResponseFactory().createResponse("Все возможные объекты были удалены");
             }
-            return new ResponseFactory().createResponse("Все возможные объекты были удалены");
         }
         return new ResponseFactory().createResponse("Вы пока что не создали ни одного объекта");
     }
@@ -136,9 +138,11 @@ public class ServerCollectionManager {
     public Response removeFromCollection(Request request, int id) {
         Optional<MusicBand> targetMusicBand = findModelByIdAndCreatorId(request, id);
         if (targetMusicBand.isPresent()) {
-            if (musicBandDao.deleteById(targetMusicBand.get()) != DAO.ERROR) {
-                musicBandLinkedList.remove(findModelById(id));
-                return new ResponseFactory().createResponse("Объект с id " + targetMusicBand.get().getId() + " успешно удален!");
+            synchronized (this) {
+                if (musicBandDao.deleteById(targetMusicBand.get()) != DAO.ERROR) {
+                    musicBandLinkedList.remove(findModelById(id));
+                    return new ResponseFactory().createResponse("Объект с id " + targetMusicBand.get().getId() + " успешно удален!");
+                }
             }
         }
         return new ResponseFactory().createResponse("Объекта с id " + id + " не существует или вы пытаетесь удалить объект, который был создан не вами");
@@ -147,11 +151,13 @@ public class ServerCollectionManager {
     public Response updateElementInCollection(MusicBand musicBand, Integer userInput, Request request) {
         Optional<MusicBand> targetMusicBand = findModelByIdAndCreatorId(request, userInput);
         if (targetMusicBand.isPresent()) {
-            request.getRequestBodyMusicBand().getMusicBand().setCreatorId(targetMusicBand.get().getCreatorId());
-            request.getRequestBodyMusicBand().getMusicBand().setId(targetMusicBand.get().getId());
-            if (musicBandDao.update(request.getRequestBodyMusicBand().getMusicBand()) != DAO.ERROR) {
-                musicBand.updateElement(request.getRequestBodyMusicBand().getMusicBand());
-                return new ResponseFactory().createResponse("Объект с id: " + request.getRequestBody().getArgs()[0] + " успешно обновлен");
+            synchronized (this) {
+                request.getRequestBodyMusicBand().getMusicBand().setCreatorId(targetMusicBand.get().getCreatorId());
+                request.getRequestBodyMusicBand().getMusicBand().setId(targetMusicBand.get().getId());
+                if (musicBandDao.update(request.getRequestBodyMusicBand().getMusicBand()) != DAO.ERROR) {
+                    musicBand.updateElement(request.getRequestBodyMusicBand().getMusicBand());
+                    return new ResponseFactory().createResponse("Объект с id: " + request.getRequestBody().getArgs()[0] + " успешно обновлен");
+                }
             }
         }
         return new ResponseFactory().createResponse("Объекта с id " + userInput + " нет в коллекции или вы пытаетесь обновить элемент, который вам не принадлежит");
@@ -178,12 +184,14 @@ public class ServerCollectionManager {
         if (usersList.size() == 0) {
             return new ResponseFactory().createResponse("Элементов, меньших чем указано, не было найдено или вы не создали ни одного объекта");
         } else {
-            for (MusicBand m : usersList) {
-                if (musicBandDao.deleteById(m) != DAO.ERROR) {
-                    musicBandLinkedList.remove(m);
+            synchronized (this) {
+                for (MusicBand m : usersList) {
+                    if (musicBandDao.deleteById(m) != DAO.ERROR) {
+                        musicBandLinkedList.remove(m);
+                    }
                 }
+                return new ResponseFactory().createResponse("Элементы, меньшие чем указаны успешно удалены");
             }
-            return new ResponseFactory().createResponse("Элементы, меньшие чем указаны успешно удалены");
         }
     }
 

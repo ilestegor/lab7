@@ -17,6 +17,8 @@ import java.util.Map;
 public class CommandManager {
     private static HashMap<String, Command> clientCommandMap;
     private static HashMap<String, Command> serverCommandMap;
+    private static HashMap<String, Command> clientHelperCommandMap;
+    private static HashMap<String, Command> serverHelperCommandMap;
     private final ServerCollectionManager serverCollectionManager;
     private DBUserManager dbUserManager;
     private CreatorManager creatorManager;
@@ -28,11 +30,13 @@ public class CommandManager {
         this.serverCollectionManager = serverCollectionManager;
         this.creatorManager = creatorManager;
         initServerCommands();
+        initServerHelperCommands();
     }
 
     public CommandManager(ServerCollectionManager serverCollectionManager, UserManager userManager) {
         this.serverCollectionManager = serverCollectionManager;
         initClientCommands(userManager);
+        initClientHelperCommands();
     }
 
 
@@ -80,6 +84,16 @@ public class CommandManager {
         clientCommandMap.put("execute_script", new ExecuteScriptCommand(um, RegistrationCode.REGISTERED));
     }
 
+    private void initServerHelperCommands() {
+        serverHelperCommandMap = new HashMap<>();
+        serverHelperCommandMap.put("create", new CreateModelCommand(serverCollectionManager));
+    }
+
+    private void initClientHelperCommands() {
+        clientHelperCommandMap = new HashMap<>();
+        clientHelperCommandMap.put("create", new CreateModelCommand());
+    }
+
     /**
      * Return all commands that stored in HashMap
      *
@@ -93,7 +107,14 @@ public class CommandManager {
         return serverCommandMap;
     }
 
-    //return commands depending on their registration code
+    public static HashMap<String, Command> getClientHelperCommandMap() {
+        return clientHelperCommandMap;
+    }
+
+    public static HashMap<String, Command> getServerHelperCommandMap() {
+        return serverHelperCommandMap;
+    }
+
     public static HashMap<String, Command> getCommandsByRegistration(HashMap<String, Command> commandHashMap, Request request) {
         HashMap<String, Command> result = new HashMap<>();
         for (Map.Entry<String, Command> x : commandHashMap.entrySet()) {
@@ -115,8 +136,7 @@ public class CommandManager {
         }
     }
 
-    //checks if commands in map depending on its registration code
-    public static boolean executeServer(Request request, CommandManager commandManager) {
+    public static boolean executeServer(Request request) {
         HashMap<String, Command> cmd = getCommandsByRegistration(serverCommandMap, request);
         return cmd.containsKey(request.getCommandDTO().getCommandName());
     }

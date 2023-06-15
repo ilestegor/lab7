@@ -6,6 +6,7 @@ import common.exception.RecursionException;
 import common.exception.WrongArgumentException;
 import common.manager.CommandManager;
 import common.network.Request;
+import common.network.Response;
 import common.utility.Printer;
 
 import java.util.Arrays;
@@ -40,5 +41,12 @@ public class ClientCommandProcessor {
             printer.printNextLine("Такой команды нет! Введите команду help для просмотра списка всех доступных команд");
             return false;
         }
+    }
+
+    public Request subRequest(Request request, Response response) {
+        HashMap<String, Command> helperCommands = CommandManager.getClientHelperCommandMap();
+        helperCommands.get(response.getCommandToExecute()).setName(response.getCommandToExecute());
+        helperCommands.get(response.getCommandToExecute()).setArgs(request.getRequestBody().getArgs());
+        return helperCommands.get(response.getCommandToExecute()).execute();
     }
 }

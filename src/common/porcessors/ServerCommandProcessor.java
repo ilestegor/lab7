@@ -15,7 +15,7 @@ public class ServerCommandProcessor {
     }
 
     public Response processCommand(Request request) {
-        if (CommandManager.executeServer(request, commandManager)) {
+        if (CommandManager.executeServer(request)) {
             HashMap<String, Command> cmd = CommandManager.getCommandsByRegistration(CommandManager.getServerCommandMap(), request);
             cmd.get(request.getCommandDTO().getCommandName()).setName(request.getCommandDTO().getCommandName());
             if (request.getRequestBodyMusicBand() != null) {
@@ -24,7 +24,14 @@ public class ServerCommandProcessor {
             }
             cmd.get(request.getCommandDTO().getCommandName()).setArgs(request.getRequestBody().getArgs());
             return cmd.get(request.getCommandDTO().getCommandName()).execute(request);
+        } else if (CommandManager.getServerHelperCommandMap().containsKey(request.getCommandDTO().getCommandName())) {
+            HashMap<String, Command> helperList = CommandManager.getServerHelperCommandMap();
+            helperList.get(request.getCommandDTO().getCommandName()).setName(request.getCommandDTO().getCommandName());
+            helperList.get(request.getCommandDTO().getCommandName()).setArgs(request.getRequestBody().getArgs());
+            return helperList.get(request.getCommandDTO().getCommandName()).execute(request);
         }
         return new Response("Такой команды нет или у данной команды не должно быть аргументов!");
     }
+
+
 }

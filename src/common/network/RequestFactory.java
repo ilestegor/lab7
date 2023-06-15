@@ -21,7 +21,7 @@ public class RequestFactory implements Serializable {
         return new Request(new CommandDTO(nameOfCommand), RequestBodyFactory.createRequestBody(args), RequestBodyFactory.createRequestBodyMusicBand(musicBand));
     }
 
-    public Request createRequestWithNoArgs(String nameOfCommand) {
-        return new Request(new CommandDTO(nameOfCommand));
+    public Request createSubRequest(String nameOfCommand, String[] args, boolean isSubRequest) {
+        return new Request(new CommandDTO(nameOfCommand), new RequestBody(args), isSubRequest);
     }
 }

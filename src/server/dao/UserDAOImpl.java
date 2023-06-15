@@ -54,6 +54,7 @@ public class UserDAOImpl implements DAO<User> {
         }
     }
 
+    //for further expansion
     @Override
     public int deleteAll(User user) {
         return 0;

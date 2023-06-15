@@ -7,6 +7,10 @@ import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
+import common.utility.Printer;
+import server.model.MusicBand;
+
+import java.util.Optional;
 
 /**
  * Class contains implementation of update stuff.command
@@ -16,6 +20,7 @@ import common.network.ResponseFactory;
  */
 public class UpdateIdCommand extends Command {
     private final RegistrationCode registrationCode;
+    Printer printer = new Printer();
 
     public UpdateIdCommand(ServerCollectionManager serverCollectionManager, RegistrationCode registrationCode) {
         super("update", "Команда принимает в виде аргумента id элеменета, который находится в коллекции и обновляет его данные", serverCollectionManager);
@@ -26,10 +31,12 @@ public class UpdateIdCommand extends Command {
         this.registrationCode = registrationCode;
     }
 
+    //execute for id -> server gives us response -> by response we need not call another command to collect data from user
     @Override
     public Request execute() {
-        if (checkArgument(getArgs()))
-            return new RequestFactory().createRequestMusicBandWithArgs(getName(), getArgs(), getUserManager().requestDataForUserMusicBand());
+        if (checkArgument(getArgs())) {
+            return new RequestFactory().createRequest(getName(), getArgs());
+        }
         throw new WrongArgumentException("У команды update должен быть аргумент id (id элемента, значение которого вы хотите обновить) типа (int). Попробуйте еще раз!");
     }
 
@@ -38,8 +45,12 @@ public class UpdateIdCommand extends Command {
         if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
             return new ResponseFactory().createResponse("Коллекция пуста!");
         } else {
-            int userInputId = Integer.parseInt(request.getRequestBody().getArgs()[0]);
-            return getMusicBandCollectionManager().updateElementInCollection(getMusicBandCollectionManager().findModelById(userInputId), userInputId, request);
+            long userInputId = Long.parseLong(request.getRequestBody().getArgs()[0]);
+            Optional<MusicBand> targetMusicBand = getMusicBandCollectionManager().findModelByIdAndCreatorId(request, Math.toIntExact(userInputId));
+            if (getMusicBandCollectionManager().getIdContainer().contains(userInputId) && targetMusicBand.isPresent()) {
+                return new ResponseFactory().createResponseWithNoMessage(true, "create");
+            }
+            return new ResponseFactory().createResponseWithMessage("Такого id " + userInputId + "  нет или вы пытаетесь обновить объект, который вам не принадлежит", false, "create");
         }
     }
 

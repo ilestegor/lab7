@@ -15,10 +15,15 @@ public class Request implements Serializable {
     private RequestBodyMusicBand requestBodyMusicBand;
     private Credential credential;
     private RegistrationCode registrationCode;
+    private boolean isSubRequest;
 
     public Request(CommandDTO commandDTO, RequestBody requestBody) {
         this.commandDTO = commandDTO;
         this.requestBody = requestBody;
+    }
+
+    public Request(CommandDTO commandDTO, RequestBody requestBody, boolean isSubRequest) {
+        this.isSubRequest = isSubRequest;
     }
 
     public Request(CommandDTO commandDTO) {
@@ -77,5 +82,9 @@ public class Request implements Serializable {
 
     public void setCommandDTO(CommandDTO commandDTO) {
         this.commandDTO = commandDTO;
+    }
+
+    public boolean isSubRequest() {
+        return isSubRequest;
     }
 }

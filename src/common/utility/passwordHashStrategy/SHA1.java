@@ -1,6 +1,5 @@
 package common.utility.passwordHashStrategy;
 
-import common.exception.WrongArgumentException;
 import server.MainServerApp;
 
 import java.math.BigInteger;

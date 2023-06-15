@@ -9,7 +9,6 @@ import common.manager.ServerCollectionManager;
 import common.manager.UserManager;
 import common.network.Request;
 import common.network.Response;
-import common.network.ResponseFactory;
 import common.porcessors.ClientCommandProcessor;
 import common.utility.Printer;
 
@@ -62,15 +61,22 @@ public class Client {
                                 this.credentials = request.getCredential();
                             }
                             clientConnection.sendCommand(request);
-                            ResponseFactory responseFactory = new ResponseFactory();
                             Response response = clientConnection.receiveResult();
-                            responseFactory.createResponse(response.getMessage());
-                            System.out.println("\n" + response.getMessage() + "\n");
-                            if (response.getRegistrationCode().equals(RegistrationCode.REGISTERED)) {
+                            if (response.getMessage() == null && response.isDoesExists()) {
+                                System.out.println(response.getCommandToExecute());
+                                request = cmp.subRequest(request, response);
+                                request.setCredential(this.credentials);
                                 request.setRegistrationCode(RegistrationCode.REGISTERED);
+                                clientConnection.sendCommand(request);
+                                printer.printNextLine(clientConnection.receiveResult().getMessage());
                             } else {
-                                credentials = null;
-                                request.setRegistrationCode(RegistrationCode.NOT_REGISTERED);
+                                printer.printNextLine("\n" + response.getMessage() + "\n");
+                                if (response.getRegistrationCode().equals(RegistrationCode.REGISTERED)) {
+                                    request.setRegistrationCode(RegistrationCode.REGISTERED);
+                                } else {
+                                    credentials = null;
+                                    request.setRegistrationCode(RegistrationCode.NOT_REGISTERED);
+                                }
                             }
                         } catch (CommandIsNotExecutedException ex) {
                             printer.printError(ex.getMessage());

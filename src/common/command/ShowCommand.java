@@ -43,7 +43,6 @@ public class ShowCommand extends Command {
             return new ResponseFactory().createResponse("Коллекция пустая!");
         } else {
             ArrayList<String> musicBandShowCommandList = new ArrayList<>();
-            getMusicBandCollectionManager().getMusicBandLinkedList().sort((o1, o2) -> (int) (o1.getCoordinates().getX() - o2.getCoordinates().getX()));
             getMusicBandCollectionManager().getMusicBandLinkedList().stream().map(MusicBand::toString).forEachOrdered(musicBandShowCommandList::add);
             return new ResponseFactory().createResponse(String.join("", musicBandShowCommandList));
         }

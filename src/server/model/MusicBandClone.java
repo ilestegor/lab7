@@ -9,6 +9,7 @@ import java.util.Date;
  *
  * @author ilestegor
  */
+@Deprecated
 public class MusicBandClone implements Serializable {
     @Serial
     private static final long serialVersionUID = 8524131703524372263L;

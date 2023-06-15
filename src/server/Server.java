@@ -17,14 +17,13 @@ import server.network.ServerConnection;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.SocketAddress;
+import java.net.InetAddress;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Server {
     ServerConnection serverConnection;
@@ -77,7 +76,8 @@ public class Server {
                                 System.out.println(Thread.currentThread());
                                 Response response = new Response();
                                 Pair<DatagramPacket, byte[]> requestFormList = listOfRequests.getLast();
-                                SocketAddress addr = requestFormList.getLeft().getSocketAddress();
+                                InetAddress address = requestFormList.getLeft().getAddress();
+                                int port = requestFormList.getLeft().getPort();
                                 Request request = null;
                                 try {
                                     request = (Request) Serializer.deserialize(requestFormList.getRight());
@@ -92,10 +92,13 @@ public class Server {
                                     response.setRegistrationCode(RegistrationCode.NOT_REGISTERED);
                                 }
                                 MainServerApp.LOGGER.info("Пакет получен от клиента: "
-                                        + addr + " " +
-                                        addr + " c командой " + request.getCommandDTO().getCommandName());
+                                        + address.getHostName() + " " +
+                                        port + " c командой " + request.getCommandDTO().getCommandName());
                                 Response response1 = scm.processCommand(request);
                                 response.setMessage(response1.getMessage());
+                                response.setDoesExists(response1.isDoesExists());
+                                response.setSubResponse(response1.isSubResponse());
+                                response.setCommandToExecute(response1.getCommandToExecute());
                                 if (response1.getRegistrationCode() != null) {
                                     response.setRegistrationCode(response1.getRegistrationCode());
                                 }
@@ -109,9 +112,9 @@ public class Server {
                                 }).start();
                                 MainServerApp.LOGGER.info("Отправлен ответ на команду "
                                         + request.getCommandDTO().getCommandName() + " клиенту "
-                                        + addr
+                                        + address.getHostName()
                                         + " "
-                                        + addr);
+                                        + port);
                                 try {
                                     serverConnection.disconnect();
                                 } catch (IOException e) {

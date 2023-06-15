@@ -45,7 +45,7 @@ public class CreatorManager implements DBUserManager, Serializable {
     public Response logOut(Request request) {
         Response response = new Response();
         response.setRegistrationCode(RegistrationCode.NOT_REGISTERED);
-        response.setMessage("До свидания!");
+        response.setMessage("До встречи :)");
         return response;
     }
 
