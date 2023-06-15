@@ -20,10 +20,8 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
+import java.util.Scanner;
+import java.util.concurrent.*;
 
 public class Server {
     ServerConnection serverConnection;
@@ -32,7 +30,9 @@ public class Server {
     CreatorManager creatorManager;
     UserDAOImpl userDAO;
     MusicBandDaoImpl musicBandDao;
+    Scanner scanner = new Scanner(System.in);
     ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    ScheduledExecutorService serverInput = Executors.newScheduledThreadPool(1);
     ForkJoinPool forkJoinPool = new ForkJoinPool();
     LinkedList<Pair<DatagramPacket, byte[]>> listOfRequests = new LinkedList<>();
 
@@ -64,6 +64,7 @@ public class Server {
             sc.readToCollection();
             cm = new CommandManager(sc, creatorManager, creatorManager);
             ServerCommandProcessor scm = new ServerCommandProcessor(cm);
+            serverInput.scheduleAtFixedRate(checkForInput, 1, 2, TimeUnit.SECONDS);
             while (isRunning) {
                 Pair<DatagramPacket, byte[]> requestPair = serverConnection.receiveDataFromClient();
                 if (requestPair.getRight().length != 0) {
@@ -129,4 +130,15 @@ public class Server {
             MainServerApp.LOGGER.warning("Проблема соединения! Порт недоступен, поменяйте порт в переменной окружения");
         }
     }
+    Runnable checkForInput = (() -> {
+        try {
+            if (System.in.available() > 0){
+                if (scanner.nextLine().equals("exit")){
+                    System.exit(0);
+                }
+            }
+        } catch (IOException e) {
+            MainServerApp.LOGGER.info("Проблема с вводом на сервере");
+        }
+    });
 }
