@@ -122,6 +122,10 @@ public class MusicBand implements Serializable {
         this.creatorId = creatorId;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public long getId() {
         return id;
     }

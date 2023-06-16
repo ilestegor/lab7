@@ -31,7 +31,7 @@ public class UpdateIdCommand extends Command {
         this.registrationCode = registrationCode;
     }
 
-    //execute for id -> server gives us response -> by response we need not call another command to collect data from user
+
     @Override
     public Request execute() {
         if (checkArgument(getArgs())) {

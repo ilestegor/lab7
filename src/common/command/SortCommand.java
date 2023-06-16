@@ -8,6 +8,10 @@ import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
 import common.utility.SortByName;
+import server.model.MusicBand;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Class contains implementation of sort command
@@ -41,8 +45,11 @@ public class SortCommand extends Command {
         if (getMusicBandCollectionManager().getMusicBandLinkedList().isEmpty()) {
             return new ResponseFactory().createResponse("Коллекция пуста! Сортировать нечего");
         } else {
-            getMusicBandCollectionManager().getMusicBandLinkedList().sort(new SortByName());
-            return new ResponseFactory().createResponse("Коллекция успешно отсортирована!");
+            LinkedList<MusicBand> sortedList = new LinkedList<>(getMusicBandCollectionManager().getMusicBandLinkedList());
+            sortedList.sort(new SortByName());
+            ArrayList<String> musicBandSortedList = new ArrayList<>();
+            sortedList.stream().map(MusicBand::toString).forEachOrdered(musicBandSortedList::add);
+            return new ResponseFactory().createResponse(String.join("", musicBandSortedList));
         }
     }
 

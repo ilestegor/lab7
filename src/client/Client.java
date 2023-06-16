@@ -63,7 +63,6 @@ public class Client {
                             clientConnection.sendCommand(request);
                             Response response = clientConnection.receiveResult();
                             if (response.getMessage() == null && response.isDoesExists()) {
-                                System.out.println(response.getCommandToExecute());
                                 request = cmp.subRequest(request, response);
                                 request.setCredential(this.credentials);
                                 request.setRegistrationCode(RegistrationCode.REGISTERED);

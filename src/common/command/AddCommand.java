@@ -46,6 +46,7 @@ public class AddCommand extends Command {
         if (checkMusicBandArgument(request.getRequestBodyMusicBand().getMusicBand())) {
             request.getRequestBodyMusicBand().getMusicBand().setCreationDate(LocalDate.now().atStartOfDay());
             request.getRequestBodyMusicBand().getMusicBand().setCreatorId(creatorManager.findUserByCredentials(request.getCredential()).getId());
+            request.getRequestBodyMusicBand().getMusicBand().setUserName(creatorManager.findUserById(request.getRequestBodyMusicBand().getMusicBand().getCreatorId()).getCredentials().getLogin());
             if (getMusicBandCollectionManager().addMusicBandToDB(request.getRequestBodyMusicBand().getMusicBand())) {
                 return new ResponseFactory().createResponse("Объект успешео добавлен в коллекцию!");
             } else return new ResponseFactory().createResponse("Объект не добавлен в коллекцию! Попробуйте еще раз");

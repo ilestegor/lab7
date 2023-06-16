@@ -162,6 +162,14 @@ public class ServerCollectionManager {
         }
         return new ResponseFactory().createResponse("Объекта с id " + userInput + " нет в коллекции или вы пытаетесь обновить элемент, который вам не принадлежит");
     }
+    public boolean insertAtIndex(MusicBand musicBand, int index){
+        int id = musicBandDao.create(musicBand);
+        if (id != DAO.ERROR){
+            musicBandLinkedList.add(index, musicBand);
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Finds object by id

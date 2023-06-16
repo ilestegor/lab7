@@ -7,6 +7,7 @@ import common.network.Request;
 import common.network.RequestFactory;
 import common.network.Response;
 import common.network.ResponseFactory;
+import server.manager.CreatorManager;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -32,7 +33,7 @@ public class InsertAtIndexCommand extends Command {
     @Override
     public Request execute() {
         if (checkArgument(getArgs())) {
-            return new RequestFactory().createRequestMusicBandWithArgs(getName(), getArgs(), getUserManager().requestDataForUserMusicBand());
+            return new RequestFactory().createRequest(getName(), getArgs());
         }
         throw new WrongArgumentException("У команды insert_at должен быть аргумент (позиция типа (int), в которую вы хотите добавить новый элемент)");
 
@@ -41,14 +42,10 @@ public class InsertAtIndexCommand extends Command {
     @Override
     public Response execute(Request request) {
         if (Integer.parseInt(request.getRequestBody().getArgs()[0]) > getMusicBandCollectionManager().getMusicBandLinkedList().size() || Integer.parseInt(request.getRequestBody().getArgs()[0]) < 0) {
-            return new ResponseFactory().createResponse("Вы не можете добавить элемент в данную позиция, так как эта позиция выходит за пределы массива " +
-                    "Введите поизицию от " + 0 + " до " + (getMusicBandCollectionManager().getMusicBandLinkedList().size()));
+            return new ResponseFactory().createResponseWithMessage("Вы не можете добавить элемент в данную позиция, так как эта позиция выходит за пределы массива " +
+                    "Введите поизицию от " + 0 + " до " + (getMusicBandCollectionManager().getMusicBandLinkedList().size()), false, "insert");
         } else {
-            Random random = new Random();
-            request.getRequestBodyMusicBand().getMusicBand().setId(random.nextLong(2, getMAX_ID()));
-            request.getRequestBodyMusicBand().getMusicBand().setCreationDate(LocalDate.now().atStartOfDay());
-            getMusicBandCollectionManager().getMusicBandLinkedList().add(Integer.parseInt(request.getRequestBody().getArgs()[0]), request.getRequestBodyMusicBand().getMusicBand());
-            return new ResponseFactory().createResponse("Элемент успешно добавлен в позицию" + request.getRequestBody().getArgs()[0]);
+            return new ResponseFactory().createResponseWithNoMessage(true, "insert");
         }
     }
 

@@ -87,11 +87,13 @@ public class CommandManager {
     private void initServerHelperCommands() {
         serverHelperCommandMap = new HashMap<>();
         serverHelperCommandMap.put("create", new CreateModelCommand(serverCollectionManager));
+        serverHelperCommandMap.put("insert", new InsertAtCreationCommand(serverCollectionManager, creatorManager));
     }
 
     private void initClientHelperCommands() {
         clientHelperCommandMap = new HashMap<>();
         clientHelperCommandMap.put("create", new CreateModelCommand());
+        clientHelperCommandMap.put("insert", new InsertAtCreationCommand());
     }
 
     /**
