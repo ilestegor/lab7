@@ -9,6 +9,7 @@ import common.porcessors.ServerCommandProcessor;
 import common.utility.Serializer;
 import org.apache.commons.lang3.tuple.Pair;
 import server.dao.MusicBandDaoImpl;
+import server.dao.TableCreatorManager;
 import server.dao.UserDAOImpl;
 import server.manager.CreatorManager;
 import server.network.DBConnection;
@@ -30,6 +31,7 @@ public class Server {
     CreatorManager creatorManager;
     UserDAOImpl userDAO;
     MusicBandDaoImpl musicBandDao;
+    TableCreatorManager tableCreatorManager;
     Scanner scanner = new Scanner(System.in);
     ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
     ScheduledExecutorService serverInput = Executors.newScheduledThreadPool(1);
@@ -44,6 +46,7 @@ public class Server {
             DBConnection dbConnection = new DBConnection();
             try {
                 java.sql.Connection connection = dbConnection.connect();
+                tableCreatorManager = new TableCreatorManager(connection);
                 userDAO = new UserDAOImpl(connection);
                 musicBandDao = new MusicBandDaoImpl(connection);
                 creatorManager = new CreatorManager(userDAO);
@@ -128,10 +131,11 @@ public class Server {
             MainServerApp.LOGGER.warning("Проблема соединения! Порт недоступен, поменяйте порт в переменной окружения");
         }
     }
+
     Runnable checkForInput = (() -> {
         try {
-            if (System.in.available() > 0){
-                if (scanner.nextLine().equals("exit")){
+            if (System.in.available() > 0) {
+                if (scanner.nextLine().equals("exit")) {
                     System.exit(0);
                 }
             }

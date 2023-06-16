@@ -17,17 +17,18 @@ import java.util.Date;
 public class MusicBand implements Serializable {
     @Serial
     private static final long serialVersionUID = 8855024745871880934L;
-    private long id; //must be unique, > 0 and generated automatically
-    private String name; //filed can't be null or empty
-    private Coordinates coordinates; //field can't be null
-    private LocalDateTime creationDate; //filed can't be null, generated automatically
-    private Integer numberOfParticipants; //filed can't be null, must be > 0
-    private int albumsCount; //filed must be > 0
-    private Date establishmentDate; //field can't be null
-    private MusicGenre genre; //field can't be null
-    private Label label; //filed can be null
+    private long id;
+    private String name;
+    private Coordinates coordinates;
+    private LocalDateTime creationDate;
+    private Integer numberOfParticipants;
+    private int albumsCount;
+    private Date establishmentDate;
+    private MusicGenre genre;
+    private Label label;
     private final ModelValidator modelValidator = new ModelValidator();
     private int creatorId;
+    private String userName;
 
     public MusicBand() {
     }
@@ -49,7 +50,7 @@ public class MusicBand implements Serializable {
 
     public MusicBand(long id, String name, Coordinates coordinates, LocalDateTime creationDate,
                      Integer numberOfParticipants, int albumsCount, Date establishmentDate,
-                     MusicGenre genre, Label label, int creatorId) {
+                     MusicGenre genre, Label label, int creatorId, String userName) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -60,6 +61,7 @@ public class MusicBand implements Serializable {
         this.genre = genre;
         this.label = label;
         this.creatorId = creatorId;
+        this.userName = userName;
     }
 
     public void setName(String name) {
@@ -186,6 +188,7 @@ public class MusicBand implements Serializable {
                 "albumsCount: " + albumsCount + "\n" +
                 "establishmentDate: " + establishmentDate + "\n" +
                 "genre: " + genre + "\n" +
-                "label: " + label + "\n";
+                "label: " + label + "\n" +
+                "userName: " + userName + "\n";
     }
 }

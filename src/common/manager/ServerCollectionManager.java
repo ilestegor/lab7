@@ -76,8 +76,8 @@ public class ServerCollectionManager {
      * Validates and reads to musicBand to collection
      */
     public void readToCollection() {
-        if (musicBandDao != null) {
-            List<MusicBand> musicBandList = musicBandDao.read();
+        List<MusicBand> musicBandList;
+        if (musicBandDao != null && (musicBandList = musicBandDao.read()) != null) {
             for (MusicBand m : musicBandList) {
                 validateAndAddToCollection(m);
             }

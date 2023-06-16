@@ -18,13 +18,15 @@ import java.util.Optional;
 
 public class CreatorManager implements DBUserManager, Serializable {
 
-    private final List<User> userList;
+    private List<User> userList;
     private final UserDAOImpl userDAO;
 
 
     public CreatorManager(UserDAOImpl userDAO) {
         this.userDAO = userDAO;
-        this.userList = userDAO.read();
+        if ((this.userList = userDAO.read()) != null) {
+            this.userList = userDAO.read();
+        }
     }
 
     @Override
@@ -103,4 +105,10 @@ public class CreatorManager implements DBUserManager, Serializable {
         Optional<User> user = userList.stream().filter(targetUser -> targetUser.getCredentials().getLogin().equals(credential.getLogin())).findFirst();
         return user.orElse(null);
     }
+
+    public User findUserById(int id) {
+        Optional<User> user = userList.stream().filter(x -> x.getId() == id).findFirst();
+        return user.orElse(null);
+    }
+
 }

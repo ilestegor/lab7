@@ -235,7 +235,11 @@ public class MusicBandDaoImpl implements DAO<MusicBand> {
 
     @Override
     public List<MusicBand> read() {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.READ_MUSICBAND.getQuery())) {
+        final int userIdPosition = 1;
+        try (
+                PreparedStatement preparedStatement = connection.prepareStatement(Queries.READ_MUSICBAND.getQuery());
+                PreparedStatement getUserLogin = connection.prepareStatement(Queries.GET_USER_LOGIN_BY_ID.getQuery())
+        ) {
             DateFormat format = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy", Locale.US);
             ResultSet resultSet = preparedStatement.executeQuery();
             LinkedList<MusicBand> listOfMusicBandFromDB = new LinkedList<>();
@@ -265,7 +269,11 @@ public class MusicBandDaoImpl implements DAO<MusicBand> {
                 }
                 resultSet2.next();
                 int creatorId = resultSet.getInt("creator_id");
-                MusicBand musicBand = new MusicBand(id, name, coordinates, creationDate, numberOfParticipants, albumsCount, datestablishmentDate, musicGenre, label, creatorId);
+                getUserLogin.setInt(userIdPosition, creatorId);
+                ResultSet resultSet3 = getUserLogin.executeQuery();
+                resultSet3.next();
+                String login = resultSet3.getString("login");
+                MusicBand musicBand = new MusicBand(id, name, coordinates, creationDate, numberOfParticipants, albumsCount, datestablishmentDate, musicGenre, label, creatorId, login);
                 listOfMusicBandFromDB.add(musicBand);
             }
             MainServerApp.LOGGER.info("Коллекция загружена из базы данных");
